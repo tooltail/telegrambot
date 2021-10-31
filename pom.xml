@@ -19,23 +19,34 @@
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.telegram</groupId>
       <artifactId>telegrambots</artifactId>
       <version>5.3.0</version>
     </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.27</version>
+    </dependency>
+
   </dependencies>
 
   <build>
