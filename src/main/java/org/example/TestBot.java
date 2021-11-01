@@ -12,10 +12,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
 
-
 public class TestBot extends TelegramLongPollingBot {
 
-    Integer addCommandArgumets = 0;
+    Integer addCommandArguments = 0;
     Place place = new Place();
 
     public void savePlaceToDatabase() {
@@ -50,6 +49,17 @@ public class TestBot extends TelegramLongPollingBot {
                 .build());
     }
 
+    public void printListOfBars(String chatId) {
+        EntityManager em = Persistence.createEntityManagerFactory("ru.easyjava.data.jpa.hibernate")
+                .createEntityManager();
+        em.getTransaction().begin();
+        em.createQuery("SELECT p FROM Place p", Place.class)
+                .getResultList()
+                .forEach(p -> sendMessageToUser(chatId, String.format("%s (%s)", p.getName(), p.getAddress())));
+        em.getTransaction().commit();
+        em.close();
+    }
+
     @Override
     public String getBotUsername() {
         return "@FindChillPlaceBot";
@@ -63,14 +73,19 @@ public class TestBot extends TelegramLongPollingBot {
 
             if (message.hasText()) {
                 if (message.getText().equals("/add")) {
-                    addCommandArgumets = 3;
+                    addCommandArguments = 3;
                     sendMessageToUser(message.getChatId().toString(),
                             "Select the category to which you want to add the establishment:");
                 }
-                else if (addCommandArgumets > 0) {
-                    addCommand(addCommandArgumets, message.getText(),
+                else if (message.getText().equals("/bars")) {
+                    sendMessageToUser(message.getChatId().toString(),
+                            "List of bars:");
+                    printListOfBars(message.getChatId().toString());
+                }
+                else if (addCommandArguments > 0) {
+                    addCommand(addCommandArguments, message.getText(),
                             message.getChatId().toString());
-                    addCommandArgumets--;
+                    addCommandArguments--;
                 }
             }
         }
