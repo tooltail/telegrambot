@@ -1,1 +1,0 @@
-insert into placeinfo (type, name, address) values ('bar', 'Бар \'Телевизор\'', 'Радищева, 4')
