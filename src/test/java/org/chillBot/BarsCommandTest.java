@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import static org.junit.Assert.assertEquals;
 
 public class BarsCommandTest {
-    String PATH = "C:\\Users\\Alex\\IdeaProjects\\telegrambot\\src\\test\\resources\\";
+    String PATH = "src\\test\\resources\\";
     ScriptRunner sr;
     Connection con;
 
