@@ -96,6 +96,7 @@ public class Bot extends TelegramLongPollingBot {
             place.setAddress(argument);
             savePlaceToDatabase(returnAddSqlQuery("place", place.getType(),
                     place.getName(), place.getAddress()));
+            sendMessageToUser(chatId, "Bar added to database\nYou can check list of bars. Type \\bars");
         }
     }
 
