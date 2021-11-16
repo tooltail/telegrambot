@@ -9,10 +9,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Locale;
 
 
 public class Bot extends TelegramLongPollingBot {
@@ -22,6 +20,15 @@ public class Bot extends TelegramLongPollingBot {
     private Integer addCommandArguments = 0;
 
     private final Place place = new Place();
+
+    /**
+     * A method that returns bot token
+     * @return bot token
+     */
+    @Override
+    public String getBotToken() {
+        return "2029119217:AAEyuWfxXOStemuHquNZFZ8vuQxIyFihHTE";
+    }
 
     /**
      * A method that returns string sql query which insert the establishment to the database
@@ -55,7 +62,7 @@ public class Bot extends TelegramLongPollingBot {
      * A field that contains password postgres database
      */
     @Getter
-    private final String password = "u_8h,B:vV+z[UzK";
+    private final String password = "root";
 
     /**
      * A method that returns connection to postgres database
@@ -83,7 +90,7 @@ public class Bot extends TelegramLongPollingBot {
      * @param argument: user input
      * @param chatId: chat id
      */
-    public void addPlace(Integer addCommandArguments, String argument, String chatId) {
+    public void addPlace(Integer addCommandArguments, String argument, String chatId) throws SQLException {
         if (addCommandArguments == 3) {
             place.setType(argument);
             sendMessageToUser(chatId, "Enter the name of the establishment:");
@@ -94,9 +101,15 @@ public class Bot extends TelegramLongPollingBot {
         }
         else if (addCommandArguments == 1) {
             place.setAddress(argument);
-            savePlaceToDatabase(returnAddSqlQuery("place", place.getType(),
-                    place.getName(), place.getAddress()));
-            sendMessageToUser(chatId, "Bar added to database\nYou can check list of bars. Type \\bars");
+            Boolean samePlace = isAddedSamePlace(place);
+            if (samePlace) {
+                sendMessageToUser(chatId, "This place was already added");
+            }
+            else {
+                savePlaceToDatabase(returnAddSqlQuery("place", place.getType().toLowerCase(Locale.ROOT),
+                        place.getName(), place.getAddress()));
+                sendMessageToUser(chatId, "Bar added to database\nYou can check list of bars. Type \\bars");
+            }
         }
     }
 
@@ -178,12 +191,26 @@ public class Bot extends TelegramLongPollingBot {
     }
 
     /**
-     * A method that returns bot token
-     * @return bot token
+     * A method that checks whether place was already added to the table or not
+     * @param newPlace: new place that would be added by user
+     * @return Boolean
+     * @throws SQLException
      */
-    @Override
-    public String getBotToken() {
-        return "2029119217:AAEyuWfxXOStemuHquNZFZ8vuQxIyFihHTE";
+    @SneakyThrows
+    public Boolean isAddedSamePlace(Place newPlace){
+      Boolean samePlace = false;
+      ResultSet rs = returnListOfBars(returnOutputSqlQuery("place"));
+      while (rs.next())
+      {
+          if(newPlace.getAddress().equals(rs.getString("address"))
+                  && newPlace.getName().equals(rs.getString("name"))
+                  && newPlace.getType().equals(rs.getString("type")))
+          {
+              samePlace = true;
+              break;
+          }
+      }
+      return samePlace;
     }
 
     /**

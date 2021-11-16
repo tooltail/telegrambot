@@ -7,6 +7,9 @@ import lombok.Setter;
  * The class that describes the establishment
  */
 public class Place {
+    @Getter
+    @Setter
+    private Integer id;
 
     /**
      * A field that contains the type of establishment
