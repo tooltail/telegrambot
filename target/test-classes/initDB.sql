@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS placetest(
+    id SERIAL NOT NULL PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    address VARCHAR(50) NOT NULL
+);
