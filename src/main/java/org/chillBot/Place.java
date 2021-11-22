@@ -7,9 +7,6 @@ import lombok.Setter;
  * The class that describes the establishment
  */
 public class Place {
-    @Getter
-    @Setter
-    private Integer id;
 
     /**
      * A field that contains the type of establishment
@@ -31,4 +28,10 @@ public class Place {
     @Getter
     @Setter
     private String address;
+
+    public Place(String type, String name, String address) {
+        this.type = type;
+        this.name = name;
+        this.address = address;
+    }
 }
