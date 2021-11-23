@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DBPlaceDao implements PlaceDao {
+public class DBPlaceDao implements PlaceDao{
 
     /**
      * A field that contains username postgres database
