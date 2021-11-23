@@ -1,8 +1,10 @@
 package org.chillBot;
 
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import java.sql.SQLException;
 
 public interface IBot {
-    public boolean addPlace(Place place) throws SQLException;
-    public void printAllPlaces();
+    boolean addPlace(Place place) throws SQLException, TelegramApiException;
+    boolean printAllPlaces() throws SQLException, TelegramApiException;
 }

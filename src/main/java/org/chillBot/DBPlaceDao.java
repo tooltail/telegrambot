@@ -19,32 +19,10 @@ public class DBPlaceDao implements PlaceDao {
     private final String tableName = "place";
 
     /**
-     * A method that returns string sql query which insert the establishment to the database
-     * @param tableName: table name
-     * @param type: type of establishment
-     * @param name: name of establishment
-     * @param address: address of establishment
-     * @return string sql query
-    public String returnAddSqlQuery(String tableName, String type, String name, String address) {
-        return String.format("INSERT INTO %s (type, name, address) VALUES('%s', '%s', '%s') ON CONFLICT DO NOTHING",
-                tableName, type, name, address);
-    }
-    */
-
-    /**
-     * A method that returns string sql query which returns all establishments from databases
-     * @param tableName: table name
-     * @return string sql query
-    public String returnOutputSqlQuery(String tableName) {
-        return String.format("SELECT * FROM %s", tableName);
-    }
-    */
-
-    /**
      * A method that returns connection to postgres database
      * @return connection to postgres database
      */
-    public Connection getConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/telegrambot_schema", user, password);
     }
 
@@ -67,38 +45,30 @@ public class DBPlaceDao implements PlaceDao {
         return places;
     }
 
-    /**
-     * A method that checks whether place was already added to the table or not
-     * @param newPlace: new place that would be added by user
-     * @return Boolean
-    @SneakyThrows
-    public Boolean isAddedSamePlace(Place newPlace){
-        boolean samePlace = false;
-        ResultSet rs = returnListOfBars(returnOutputSqlQuery("place"));
-        while (rs.next())
-        {
-            if(newPlace.getAddress().equals(rs.getString("address"))
-                    && newPlace.getName().equals(rs.getString("name"))
-                    && newPlace.getType().equals(rs.getString("type")))
-            {
-                samePlace = true;
-                break;
-            }
+    private boolean existPlaceInDB(Place place) throws SQLException {
+        List<Place> places = getAllPlaces();
+        for (Place pl: places) {
+            if (pl.equals(place))
+                return true;
         }
-        return samePlace;
+        return false;
     }
-    */
 
     /**
      * A method that writes the establishment to the database
      * @param place
      */
     @Override
-    public void addPlace(Place place) throws SQLException {
-        String sqlQuery = String.format("INSERT INTO %s (type, name, address) VALUES('%s', '%s', '%s') ON CONFLICT DO NOTHING",
-                tableName, place.getType(), place.getName(), place.getAddress());
-        Connection con = getConnection();
-        Statement stmt = con.createStatement();
-        stmt.executeUpdate(sqlQuery);
+    public boolean addPlace(Place place) throws SQLException {
+        if (existPlaceInDB(place))
+            return false;
+        else {
+            String sqlQuery = String.format("INSERT INTO %s (type, name, address) VALUES('%s', '%s', '%s') ON CONFLICT DO NOTHING",
+                    tableName, place.getType(), place.getName(), place.getAddress());
+            Connection con = getConnection();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(sqlQuery);
+            return true;
+        }
     }
 }
