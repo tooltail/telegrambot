@@ -6,5 +6,5 @@ import java.sql.SQLException;
 
 public interface IBot {
     boolean addPlace(Place place) throws SQLException, TelegramApiException;
-    boolean printAllPlaces() throws SQLException, TelegramApiException;
+    boolean printAllPlaces(String arg) throws SQLException, TelegramApiException;
 }

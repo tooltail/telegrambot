@@ -23,7 +23,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
 
     private String chatId;
 
-    private DBPlaceDao dbDao = new DBPlaceDao();
+    public DBPlaceDao dbDao = new DBPlaceDao();
 
     /**
      * A method that describes the logic of add command
@@ -66,11 +66,11 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     /**
      * A method that prints list of bars to the user
      */
-    public boolean printAllPlaces() throws SQLException, TelegramApiException {
-        //PlaceDao dbDao = new DBPlaceDao();
+    public boolean printAllPlaces(String arg) throws SQLException, TelegramApiException {
         List<Place> places = dbDao.getAllPlaces();
         if (places.size() == 0) {
-            sendMessageToUser("No bars added yet");
+            if (arg.equals(""))
+                sendMessageToUser("No bars added yet");
             return false;
         }
         else {
@@ -78,7 +78,8 @@ public class Bot extends TelegramLongPollingBot implements IBot{
                 String result = String.format("%s (%s)",
                         place.getName(),
                         place.getAddress());
-                sendMessageToUser(result);
+                if (arg.equals(""))
+                    sendMessageToUser(result);
             }
             return true;
         }
@@ -112,7 +113,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
                 }
                 else if (message.getText().equals("/bars")) {
                         sendMessageToUser("List of bars:");
-                        printAllPlaces();
+                        printAllPlaces("");
                 }
                 else if (addCommandArguments > 0) {
                     addInputToPlace(message.getText());

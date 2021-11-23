@@ -21,7 +21,8 @@ public class BarsCommandTest {
         DBPlaceDao dbPlaceDaoMock = Mockito.mock(DBPlaceDao.class);
         when(dbPlaceDaoMock.getAllPlaces()).thenReturn(new LinkedList<>());
         Bot bot = new Bot();
-        assertEquals(false, bot.printAllPlaces());
+        bot.dbDao = dbPlaceDaoMock;
+        assertEquals(false, bot.printAllPlaces("test"));
     }
 
     @Test
@@ -32,6 +33,7 @@ public class BarsCommandTest {
         list.add(place);
         when(dbPlaceDaoMock.getAllPlaces()).thenReturn(list);
         Bot bot = new Bot();
-        assertEquals(true, bot.printAllPlaces());
+        bot.dbDao = dbPlaceDaoMock;
+        assertEquals(true, bot.printAllPlaces("test"));
     }
 }

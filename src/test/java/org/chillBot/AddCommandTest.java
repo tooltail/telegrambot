@@ -18,6 +18,7 @@ public class AddCommandTest {
         Place place = new Place("Bar", "Televisor", "Radisheva, 4");
         when(dbPlaceDaoMock.addPlace(place)).thenReturn(true);
         Bot bot = new Bot();
+        bot.dbDao = dbPlaceDaoMock;
         boolean check = bot.addPlace(place);
         assertEquals(true, check);
     }
@@ -28,6 +29,7 @@ public class AddCommandTest {
         Place place = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
         when(dbPlaceDaoMock.addPlace(place)).thenReturn(true).thenReturn(false);
         Bot bot = new Bot();
+        bot.dbDao = dbPlaceDaoMock;
         assertTrue(bot.addPlace(place));
         assertFalse(bot.addPlace(place));
     }
