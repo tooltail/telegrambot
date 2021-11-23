@@ -24,7 +24,6 @@ public class Bot extends TelegramLongPollingBot implements IBot{
 
     private String chatId;
 
-    @Inject
     private DBPlaceDao dbDao = new DBPlaceDao();
 
     /**
