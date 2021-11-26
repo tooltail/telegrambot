@@ -8,18 +8,6 @@ import static org.junit.Assert.assertEquals;
 public class BarsCommandTest {
 
     /**
-     * Checks if output is empty
-     * @throws SQLException
-
-    @Test
-    public void testPrintAllPlacesIfNoBars() throws SQLException {
-        InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao);
-        assertTrue(bot.getAllPlaces().isEmpty());
-    }
-    */
-
-    /**
      * Checks bot output
      * @throws SQLException
      */
