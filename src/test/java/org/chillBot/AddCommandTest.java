@@ -1,36 +1,40 @@
 package org.chillBot;
 
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
 
 public class AddCommandTest {
 
+    /**
+     * Checks if added to db
+     * @throws SQLException
+     */
     @Test
     public void testAddPlace() throws SQLException {
-        DBPlaceDao dbPlaceDaoMock = Mockito.mock(DBPlaceDao.class);
         Place place = new Place("Bar", "Televisor", "Radisheva, 4");
-        when(dbPlaceDaoMock.addPlace(place)).thenReturn(true);
-        Bot bot = new Bot();
-        bot.dbDao = dbPlaceDaoMock;
-        boolean check = bot.addPlace(place);
-        assertEquals(true, check);
+        InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
+        Bot bot = new Bot(placeDao);
+        boolean result = bot.addPlace(place);
+        assertTrue(result);
+        assertEquals(1, placeDao.getAllPlaces().size());
+        assertEquals(place, placeDao.getAllPlaces().get(0));
     }
 
+    /**
+     * Checks if added same places
+     * @throws SQLException
+     */
     @Test
-    public void testAddSamePlaces() throws TelegramApiException, SQLException {
-        DBPlaceDao dbPlaceDaoMock = Mockito.mock(DBPlaceDao.class);
+    public void testAddSamePlaces() throws SQLException {
         Place place = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
-        when(dbPlaceDaoMock.addPlace(place)).thenReturn(true).thenReturn(false);
-        Bot bot = new Bot();
-        bot.dbDao = dbPlaceDaoMock;
-        assertTrue(bot.addPlace(place));
-        assertFalse(bot.addPlace(place));
+        InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
+        Bot bot = new Bot(placeDao);
+        boolean result = bot.addPlace(place);
+        assertTrue(result);
+        result = bot.addPlace(place);
+        assertFalse(result);
     }
 }

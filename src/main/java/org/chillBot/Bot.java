@@ -10,23 +10,31 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class Bot extends TelegramLongPollingBot implements IBot{
     /**
-     * A field that contains how many arguments are left for the user to enter
+     * Contains how many arguments are left for the user to enter
      */
     private Integer addCommandArguments = 0;
 
+    /**
+     * Contains added place
+     */
     private Place place;
 
     private String chatId;
 
-    public DBPlaceDao dbDao = new DBPlaceDao();
+    private PlaceDao placeDao;
+
+    public Bot (PlaceDao placeDao) {
+        this.placeDao = placeDao;
+    }
 
     /**
-     * A method that describes the logic of add command
+     * Gets user input and forms place
      * @param argument: user input
      */
 
@@ -48,15 +56,21 @@ public class Bot extends TelegramLongPollingBot implements IBot{
         }
     }
 
+    /**
+     * Add place to db
+     * @param place added place
+     * @return true if added, false if not
+     * @throws SQLException
+     */
     public boolean addPlace(Place place) throws SQLException {
-        return dbDao.addPlace(place);
+        return placeDao.addPlace(place);
     }
 
     /**
-     * A method that sends a message to the user
+     * Sends a message to the user
      * @param message: message to send
      */
-    public void sendMessageToUser(String message) throws TelegramApiException {
+    private void sendMessageToUser(String message) throws TelegramApiException {
          execute(SendMessage.builder()
                 .chatId(chatId)
                 .text(message)
@@ -64,30 +78,23 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     }
 
     /**
-     * A method that prints list of bars to the user
+     * Gets list of bars
      */
-    public boolean printAllPlaces(String arg) throws SQLException, TelegramApiException {
-        List<Place> places = dbDao.getAllPlaces();
-        if (places.size() == 0) {
-            if (arg.equals(""))
-                sendMessageToUser("No bars added yet");
-            return false;
+    public List<String> getAllPlaces() throws SQLException {
+        List<Place> places = placeDao.getAllPlaces();
+        List<String> formattedOutput = new LinkedList<>();
+        for (Place place : places) {
+            String result = String.format("%s (%s)",
+                    place.getName(),
+                    place.getAddress());
+            formattedOutput.add(result);
         }
-        else {
-            for (Place place : places) {
-                String result = String.format("%s (%s)",
-                        place.getName(),
-                        place.getAddress());
-                if (arg.equals(""))
-                    sendMessageToUser(result);
-            }
-            return true;
-        }
+        return formattedOutput;
     }
 
 
     /**
-     * A method that returns bot username
+     * Gets bot username
      * @return bot username
      */
     @Override
@@ -97,7 +104,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
 
 
     /**
-     * A method that the logic of bot commands
+     * Logic of bot commands
      */
     @SneakyThrows
     @Override
@@ -112,8 +119,16 @@ public class Bot extends TelegramLongPollingBot implements IBot{
                     sendMessageToUser("Select the category to which you want to add the establishment:");
                 }
                 else if (message.getText().equals("/bars")) {
-                        sendMessageToUser("List of bars:");
-                        printAllPlaces("");
+                        List<String> bars = getAllPlaces();
+                        if (bars.size() == 0) {
+                            sendMessageToUser("No bars added yet");
+                        }
+                        else {
+                            sendMessageToUser("List of bars:");
+                            for (String bar: bars) {
+                                sendMessageToUser(bar);
+                            }
+                        }
                 }
                 else if (addCommandArguments > 0) {
                     addInputToPlace(message.getText());
@@ -125,7 +140,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
 
 
     /**
-     * A method that returns bot token
+     * Gets bot token
      * @return bot token
      */
     @Override
@@ -138,7 +153,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
      * Program entry point
      */
     public static void main(String[] args) throws TelegramApiException {
-        Bot bot = new Bot();
+        Bot bot = new Bot(new DBPlaceDao());
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(bot);
     }

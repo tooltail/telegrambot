@@ -6,26 +6,26 @@ import lombok.Setter;
 import java.util.Objects;
 
 /**
- * The class that describes the establishment
+ * Describes the establishment
  */
 public class Place {
 
     /**
-     * A field that contains the type of establishment
+     * Contains the type of establishment
      */
     @Getter
     @Setter
     private String type;
 
     /**
-     * A field that contains the name of establishment
+     * Contains the name of establishment
      */
     @Getter
     @Setter
     private String name;
 
     /**
-     * A field that contains the address of establishment
+     * Contains the address of establishment
      */
     @Getter
     @Setter

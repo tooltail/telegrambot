@@ -1,39 +1,38 @@
 package org.chillBot;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
 public class BarsCommandTest {
 
-    @Test
-    public void testPrintAllPlacesIfNoBars() throws TelegramApiException, SQLException {
-        DBPlaceDao dbPlaceDaoMock = Mockito.mock(DBPlaceDao.class);
-        when(dbPlaceDaoMock.getAllPlaces()).thenReturn(new LinkedList<>());
-        Bot bot = new Bot();
-        bot.dbDao = dbPlaceDaoMock;
-        assertEquals(false, bot.printAllPlaces("test"));
-    }
+    /**
+     * Checks if output is empty
+     * @throws SQLException
 
     @Test
-    public void testPrintAllPlacesIfBarsExist() throws SQLException, TelegramApiException {
-        DBPlaceDao dbPlaceDaoMock = Mockito.mock(DBPlaceDao.class);
-        Place place = new Place("Bar", "Televisor", "Radisheva, 4");
-        List<Place> list = new LinkedList<>();
-        list.add(place);
-        when(dbPlaceDaoMock.getAllPlaces()).thenReturn(list);
-        Bot bot = new Bot();
-        bot.dbDao = dbPlaceDaoMock;
-        assertEquals(true, bot.printAllPlaces("test"));
+    public void testPrintAllPlacesIfNoBars() throws SQLException {
+        InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
+        Bot bot = new Bot(placeDao);
+        assertTrue(bot.getAllPlaces().isEmpty());
+    }
+    */
+
+    /**
+     * Checks bot output
+     * @throws SQLException
+     */
+    @Test
+    public void testPrintAllPlacesIfBarsExist() throws SQLException {
+        Place place1 = new Place("Bar", "Televisor", "Radisheva, 4");
+        Place place2 = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
+        InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
+        Bot bot = new Bot(placeDao);
+        bot.addPlace(place1);
+        bot.addPlace(place2);
+        assertEquals(2, bot.getAllPlaces().size());
+        assertEquals("Televisor (Radisheva, 4)", bot.getAllPlaces().get(0));
+        assertEquals("Melodiya (Pervomayskaya, 36)", bot.getAllPlaces().get(1));
     }
 }
