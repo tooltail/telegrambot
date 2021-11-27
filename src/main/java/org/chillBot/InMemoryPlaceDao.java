@@ -1,5 +1,6 @@
 package org.chillBot;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class InMemoryPlaceDao implements PlaceDao{
@@ -20,17 +21,16 @@ public class InMemoryPlaceDao implements PlaceDao{
 
     /**
      * Converts string to string with capital letter
-     * @param str
-     * @return
+     * @param str string to be converted
+     * @return converted string
      */
     private String convertToStringWithCapitalLetter(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
     /**
-     * Adds place to in memory db
-     * @param place
-     * @return
+     * Adds the establishment in memory
+     * @param place place which adds
      */
     @Override
     public boolean addPlace(Place place) {

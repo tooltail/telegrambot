@@ -36,6 +36,8 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     /**
      * Gets user input and forms place
      * @param argument: user input
+     * @throws SQLException
+     * @throws TelegramApiException
      */
 
     private void addInputToPlace(String argument) throws SQLException, TelegramApiException {
@@ -69,6 +71,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     /**
      * Sends a message to the user
      * @param message: message to send
+     * @throws TelegramApiException
      */
     private void sendMessageToUser(String message) throws TelegramApiException {
          execute(SendMessage.builder()
@@ -79,6 +82,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
 
     /**
      * Gets list of bars
+     * @throws SQLException
      */
     public List<String> getAllPlaces() throws SQLException {
         List<Place> places = placeDao.getAllPlaces();
@@ -149,9 +153,6 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     }
 
 
-    /**
-     * Program entry point
-     */
     public static void main(String[] args) throws TelegramApiException {
         Bot bot = new Bot(new DBPlaceDao());
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);

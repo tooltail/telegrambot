@@ -3,7 +3,6 @@ package org.chillBot;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 public class DBPlaceDao implements PlaceDao{
 
@@ -25,6 +24,7 @@ public class DBPlaceDao implements PlaceDao{
     /**
      * Gets connection to postgresql database
      * @return connection to postgresql database
+     * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/telegrambot_schema", user, password);
@@ -33,6 +33,7 @@ public class DBPlaceDao implements PlaceDao{
     /**
      * Gets list of bars from database
      * @return list of bars
+     * @throws SQLException
      */
     @Override
     public List<Place> getAllPlaces() throws SQLException {
@@ -51,7 +52,7 @@ public class DBPlaceDao implements PlaceDao{
 
     /**
      * Checks place in db
-     * @param place
+     * @param place place which checks in db
      * @return true if exists in db, false if not
      * @throws SQLException
      */
@@ -66,8 +67,8 @@ public class DBPlaceDao implements PlaceDao{
 
     /**
      * Converts string to string with capital letter
-     * @param str
-     * @return
+     * @param str string to be converted
+     * @return converted string
      */
     private String convertToStringWithCapitalLetter(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
@@ -75,7 +76,8 @@ public class DBPlaceDao implements PlaceDao{
 
     /**
      * Adds the establishment to the database
-     * @param place
+     * @param place place which adds
+     * @throws SQLException
      */
     @Override
     public boolean addPlace(Place place) throws SQLException {
