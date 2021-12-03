@@ -1,5 +1,8 @@
 package org.chillBot;
 
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
+import org.checkerframework.checker.units.qual.C;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -13,23 +16,28 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Bot extends TelegramLongPollingBot implements IBot{
+public class Bot extends TelegramLongPollingBot implements IBot, Controller{
     /**
      * Contains how many arguments are left for the user to enter
      */
-    private Integer addCommandArguments = 0;
+    //private Integer addCommandArguments = 0;
 
     /**
      * Contains added place
      */
-    private Place place;
+    //private Place place;
 
-    private String chatId;
+    public String chatId;
 
     private PlaceDao placeDao;
 
-    public Bot (PlaceDao placeDao) {
+    private Command currentCommand;
+
+    private AddCommandArgumentsParser addCommandArgumentsParser;
+
+    public Bot (PlaceDao placeDao, String chatId) {
         this.placeDao = placeDao;
+        this.chatId = chatId;
     }
 
     /**
@@ -39,7 +47,8 @@ public class Bot extends TelegramLongPollingBot implements IBot{
      * @throws TelegramApiException
      */
 
-    private void addInputToPlace(String argument) throws SQLException, TelegramApiException {
+    /*
+    public void addInputToPlace(String argument) throws SQLException, TelegramApiException {
         if (addCommandArguments == 3) {
             place.setType(argument.toLowerCase());
             sendMessageToUser("Enter the name of the establishment:");
@@ -56,6 +65,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
                 sendMessageToUser("This place was already added");
         }
     }
+     */
 
     /**
      * Add place to db
@@ -72,7 +82,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
      * @param message: message to send
      * @throws TelegramApiException
      */
-    private void sendMessageToUser(String message) throws TelegramApiException {
+    public void sendMessageToUser(String message) throws TelegramApiException {
          execute(SendMessage.builder()
                 .chatId(chatId)
                 .text(message)
@@ -115,28 +125,35 @@ public class Bot extends TelegramLongPollingBot implements IBot{
             if (update.hasMessage()) {
                 Message message = update.getMessage();
                 chatId = message.getChatId().toString();
-                if (message.hasText()) {
+                if (message.getText().equals("/add") || currentCommand == Command.addBar) {
                     if (message.getText().equals("/add")) {
-                        place = new Place();
-                        addCommandArguments = 3;
-                        try {
-                            sendMessageToUser("Select the category to which you want to add the establishment:");
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
+                        currentCommand = Command.addBar;
+                        addCommandArgumentsParser = new AddCommandArgumentsParser(new Bot(new DBPlaceDao(), chatId));
+                        sendMessageToUser("Select the category to which you want to add the establishment:");
+                    }
+                    else if (!addCommandArgumentsParser.isEnd()) {
+                        addCommandArgumentsParser.addArgument(message.getText());
+                    }
+                    if (addCommandArgumentsParser.isEnd()) {
+                        Place place = addCommandArgumentsParser.getPlace();
+                        if (addPlace(place)) {
+                            sendMessageToUser("Bar added to database\nYou can check list of bars. Type \\bars");
                         }
-                    } else if (message.getText().equals("/bars")) {
-                        List<String> bars = getAllPlaces();
-                        if (bars.size() == 0) {
-                            sendMessageToUser("No bars added yet");
-                        } else {
-                            sendMessageToUser("List of bars:");
-                            for (String bar : bars) {
-                                sendMessageToUser(bar);
-                            }
+                        else {
+                            sendMessageToUser("This place was already added");
                         }
-                    } else if (addCommandArguments > 0) {
-                        addInputToPlace(message.getText());
-                        addCommandArguments--;
+                        currentCommand = null;
+                    }
+                }
+                else if (message.getText().equals("/bars")) {
+                    List<String> bars = getAllPlaces();
+                    if (bars.size() == 0) {
+                        sendMessageToUser("No bars added yet");
+                    } else {
+                        sendMessageToUser("List of bars:");
+                        for (String bar : bars) {
+                            sendMessageToUser(bar);
+                        }
                     }
                 }
             }
@@ -144,7 +161,7 @@ public class Bot extends TelegramLongPollingBot implements IBot{
         catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        catch (SQLException e) {
+        catch (SQLException | ClientException | ApiException e) {
             e.printStackTrace();
         }
     }
@@ -160,9 +177,11 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     }
 
 
-    public static void main(String[] args) throws TelegramApiException {
-        Bot bot = new Bot(new DBPlaceDao());
+    public static void main(String[] args) throws TelegramApiException, ClientException, InterruptedException, ApiException {
+        Bot bot = new Bot(new DBPlaceDao(), "0");
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(bot);
+        VkController vkController = new VkController(0);
+        vkController.init();
     }
 }

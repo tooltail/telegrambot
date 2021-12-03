@@ -16,7 +16,7 @@ public class BarsCommandTest {
         Place place1 = new Place("Bar", "Televisor", "Radisheva, 4");
         Place place2 = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao);
+        Bot bot = new Bot(placeDao, "");
         bot.addPlace(place1);
         bot.addPlace(place2);
         assertEquals(2, bot.getAllPlaces().size());

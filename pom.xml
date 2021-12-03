@@ -76,6 +76,11 @@
     </dependency>
 -->
     <dependency>
+      <groupId>com.vk.api</groupId>
+      <artifactId>sdk</artifactId>
+      <version>1.0.7</version>
+    </dependency>
+    <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
       <version>3.4.5</version>
