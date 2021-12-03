@@ -1,6 +1,5 @@
 package org.chillBot;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class InMemoryPlaceDao implements PlaceDao{
@@ -8,7 +7,7 @@ public class InMemoryPlaceDao implements PlaceDao{
     /**
      * In memory db
      */
-    private HashSet<Place> places = new LinkedHashSet<>();
+    private Set<Place> places = new LinkedHashSet<>();
 
     /**
      * Gets all places
