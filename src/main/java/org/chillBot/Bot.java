@@ -1,6 +1,5 @@
 package org.chillBot;
 
-import lombok.SneakyThrows;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -110,35 +109,43 @@ public class Bot extends TelegramLongPollingBot implements IBot{
     /**
      * Logic of bot commands
      */
-    @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage()) {
-            Message message = update.getMessage();
-            chatId = message.getChatId().toString();
-            if (message.hasText()) {
-                if (message.getText().equals("/add")) {
-                    place = new Place();
-                    addCommandArguments = 3;
-                    sendMessageToUser("Select the category to which you want to add the establishment:");
-                }
-                else if (message.getText().equals("/bars")) {
+        try {
+            if (update.hasMessage()) {
+                Message message = update.getMessage();
+                chatId = message.getChatId().toString();
+                if (message.hasText()) {
+                    if (message.getText().equals("/add")) {
+                        place = new Place();
+                        addCommandArguments = 3;
+                        try {
+                            sendMessageToUser("Select the category to which you want to add the establishment:");
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                    } else if (message.getText().equals("/bars")) {
                         List<String> bars = getAllPlaces();
                         if (bars.size() == 0) {
                             sendMessageToUser("No bars added yet");
-                        }
-                        else {
+                        } else {
                             sendMessageToUser("List of bars:");
-                            for (String bar: bars) {
+                            for (String bar : bars) {
                                 sendMessageToUser(bar);
                             }
                         }
-                }
-                else if (addCommandArguments > 0) {
-                    addInputToPlace(message.getText());
-                    addCommandArguments--;
+                    } else if (addCommandArguments > 0) {
+                        addInputToPlace(message.getText());
+                        addCommandArguments--;
+                    }
                 }
             }
+        }
+        catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
