@@ -1,8 +1,5 @@
 package org.chillBot;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Objects;
 
 /**
@@ -10,25 +7,43 @@ import java.util.Objects;
  */
 public class Place {
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     /**
      * Contains the type of establishment
      */
-    @Getter
-    @Setter
     private String type;
 
     /**
      * Contains the name of establishment
      */
-    @Getter
-    @Setter
     private String name;
 
     /**
      * Contains the address of establishment
      */
-    @Getter
-    @Setter
     private String address;
 
     @Override

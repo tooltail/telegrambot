@@ -1,5 +1,6 @@
 package org.chillBot;
 
+import org.chillBot.dao.InMemoryPlaceDao;
 import org.junit.Test;
 
 import java.sql.SQLException;

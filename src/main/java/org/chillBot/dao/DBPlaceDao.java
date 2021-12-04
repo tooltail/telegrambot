@@ -1,10 +1,12 @@
-package org.chillBot;
+package org.chillBot.dao;
+
+import org.chillBot.Place;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DBPlaceDao implements PlaceDao{
+public class DBPlaceDao implements PlaceDao {
 
     /**
      * Contains username postgresql database
