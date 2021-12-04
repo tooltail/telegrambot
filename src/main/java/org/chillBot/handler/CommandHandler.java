@@ -16,7 +16,7 @@ public class CommandHandler {
 
     private Command currentCommand;
 
-    private AddCommandArgumentsHandler addCommandArgumentsParser;
+    private AddCommandArgumentsHandler addCommandArgumentsHandler;
 
     private Bot bot;
 
@@ -28,14 +28,14 @@ public class CommandHandler {
         if (message.equals("/add") || currentCommand == Command.addBar) {
             if (message.equals("/add")) {
                 currentCommand = Command.addBar;
-                addCommandArgumentsParser = new AddCommandArgumentsHandler(controller);
+                addCommandArgumentsHandler = new AddCommandArgumentsHandler(controller);
                 controller.sendMessageToUser("Select the category to which you want to add the establishment:");
             }
-            else if (!addCommandArgumentsParser.isEnd()) {
-                addCommandArgumentsParser.addArgument(message);
+            else if (!addCommandArgumentsHandler.isEnd()) {
+                addCommandArgumentsHandler.addArgument(message);
             }
-            if (addCommandArgumentsParser.isEnd()) {
-                Place place = addCommandArgumentsParser.getPlace();
+            if (addCommandArgumentsHandler.isEnd()) {
+                Place place = addCommandArgumentsHandler.getPlace();
                 if (bot.addPlace(place)) {
                     controller.sendMessageToUser("Bar added to database\nYou can check list of bars. Type \\bars");
                 }
