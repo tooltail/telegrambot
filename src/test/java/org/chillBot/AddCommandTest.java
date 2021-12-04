@@ -1,5 +1,6 @@
 package org.chillBot;
 
+import org.chillBot.dao.InMemoryPlaceDao;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class AddCommandTest {
     public void testAddPlace() throws SQLException {
         Place place = new Place("Bar", "Televisor", "Radisheva, 4");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao, "0");
+        Bot bot = new Bot(placeDao);
         boolean result = bot.addPlace(place);
         assertTrue(result);
         assertEquals(1, placeDao.getAllPlaces().size());
@@ -31,7 +32,7 @@ public class AddCommandTest {
     public void testAddSamePlaces() throws SQLException {
         Place place = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao, "0");
+        Bot bot = new Bot(placeDao);
         boolean result = bot.addPlace(place);
         assertTrue(result);
         result = bot.addPlace(place);

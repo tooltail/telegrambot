@@ -1,4 +1,6 @@
-package org.chillBot;
+package org.chillBot.dao;
+
+import org.chillBot.Place;
 
 import java.sql.SQLException;
 import java.util.List;

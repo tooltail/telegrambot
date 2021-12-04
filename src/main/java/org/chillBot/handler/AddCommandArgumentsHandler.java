@@ -1,13 +1,13 @@
-package org.chillBot;
+package org.chillBot.handler;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.chillBot.Place;
+import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Locale;
 
-public class AddCommandArgumentsParser {
+public class AddCommandArgumentsHandler {
 
     private Integer addCommandArguments = 3;
 
@@ -15,7 +15,7 @@ public class AddCommandArgumentsParser {
 
     private Controller controller;
 
-    public AddCommandArgumentsParser(Controller controller) {
+    public AddCommandArgumentsHandler(Controller controller) {
         place = new Place();
         this.controller = controller;
     }

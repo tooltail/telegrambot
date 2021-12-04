@@ -1,8 +1,11 @@
-package org.chillBot;
+package org.chillBot.dao;
+
+import org.chillBot.Place;
+import org.chillBot.dao.PlaceDao;
 
 import java.util.*;
 
-public class InMemoryPlaceDao implements PlaceDao{
+public class InMemoryPlaceDao implements PlaceDao {
 
     /**
      * In memory db

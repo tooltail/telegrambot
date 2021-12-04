@@ -1,4 +1,4 @@
-package org.chillBot;
+package org.chillBot.controller;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
