@@ -2,6 +2,7 @@ package org.chillBot.handler;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import org.chillBot.Command;
 import org.chillBot.Place;
 import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -17,10 +18,13 @@ public class CommandArgumentsHandler {
 
     private Controller controller;
 
-    public CommandArgumentsHandler(Controller controller, Integer countCommandArguments) {
+    private Command currentCommand;
+
+    public CommandArgumentsHandler(Controller controller, Integer countCommandArguments, Command currentCommand) {
         place = new Place();
         this.controller = controller;
         this.countCommandArguments = countCommandArguments;
+        this.currentCommand = currentCommand;
     }
 
     public boolean isEnd() {
@@ -40,10 +44,11 @@ public class CommandArgumentsHandler {
             currentCommandArgument++;
         } else if (currentCommandArgument == 2) {
             place.setAddress(argument);
+            if (currentCommand == Command.rateBar) {
+                controller.sendMessageToUser("Rate the establishment (between 1 and 5):");
+            }
             currentCommandArgument++;
-        }
-        else if (currentCommandArgument == 3){
-            controller.sendMessageToUser("Rate the establishment (between 1 and 5):");
+        } else if (currentCommandArgument == 3){
             place.setRate(Double.parseDouble(argument));
             currentCommandArgument++;
         }

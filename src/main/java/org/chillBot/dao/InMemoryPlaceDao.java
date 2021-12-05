@@ -3,6 +3,7 @@ package org.chillBot.dao;
 import org.chillBot.Place;
 import org.chillBot.dao.PlaceDao;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class InMemoryPlaceDao implements PlaceDao {
@@ -46,5 +47,10 @@ public class InMemoryPlaceDao implements PlaceDao {
             places.add(place);
             return true;
         }
+    }
+
+    @Override
+    public boolean updateRate(Place place) throws SQLException {
+        return false;
     }
 }

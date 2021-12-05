@@ -14,8 +14,8 @@ public class BarsCommandTest {
      */
     @Test
     public void testPrintAllPlacesIfBarsExist() throws SQLException {
-        Place place1 = new Place("Bar", "Televisor", "Radisheva, 4");
-        Place place2 = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
+        Place place1 = new Place("Bar", "Televisor", "Radisheva, 4", 1.0);
+        Place place2 = new Place("Bar", "Melodiya", "Pervomayskaya, 36", 1.0);
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
         Bot bot = new Bot(placeDao);
         bot.addPlace(place1);

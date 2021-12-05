@@ -28,7 +28,7 @@ public class CommandHandler {
         if (message.equals("/add") || currentCommand == Command.addBar) {
             if (message.equals("/add")) {
                 currentCommand = Command.addBar;
-                commandArgumentsHandler = new CommandArgumentsHandler(controller, 3);
+                commandArgumentsHandler = new CommandArgumentsHandler(controller, 3, currentCommand);
                 controller.sendMessageToUser("Select the category to which you want to add the establishment:");
             }
             else if (!commandArgumentsHandler.isEnd()) {
@@ -59,7 +59,7 @@ public class CommandHandler {
         else if (message.equals("/rate") || currentCommand == Command.rateBar){
             if (message.equals("/rate")) {
                 currentCommand = Command.rateBar;
-                commandArgumentsHandler = new CommandArgumentsHandler(controller, 4);
+                commandArgumentsHandler = new CommandArgumentsHandler(controller, 4, currentCommand);
                 controller.sendMessageToUser("Select the category to which you want to add the establishment:");
             }
             else if (!commandArgumentsHandler.isEnd()) {
@@ -67,7 +67,7 @@ public class CommandHandler {
             }
             if (commandArgumentsHandler.isEnd()) {
                 Place place = commandArgumentsHandler.getPlace();
-
+                bot.addRate(place);
                 currentCommand = null;
             }
         }

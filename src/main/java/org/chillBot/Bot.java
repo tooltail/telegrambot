@@ -33,9 +33,18 @@ public class Bot implements IBot {
         List<Place> places = placeDao.getAllPlaces();
         List<String> formattedOutput = new LinkedList<>();
         for (Place place : places) {
-            String result = String.format("%s (%s)",
-                    place.getName(),
-                    place.getAddress());
+            String result;
+            if (place.getRate() == -1) {
+                result = String.format("%s (%s) Bar hasn't rated yet",
+                        place.getName(),
+                        place.getAddress());
+            }
+            else {
+                result = String.format("%s (%s)  %.2f",
+                        place.getName(),
+                        place.getAddress(),
+                        place.getRate());
+            }
             formattedOutput.add(result);
         }
         return formattedOutput;

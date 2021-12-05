@@ -2,6 +2,8 @@ package org.chillBot.dao;
 
 import org.chillBot.Place;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class DBPlaceDao implements PlaceDao {
             Place place = new Place(rs.getString("type"),
                     rs.getString("name"),
                     rs.getString("address"),
-                    (double) (rs.getInt("rate")/rs.getInt("count")));
+                    (rs.getInt("count") != 0 ? (double)rs.getInt("rate")/rs.getInt("count") : -1));
             places.add(place);
         }
         return places;
@@ -101,10 +103,11 @@ public class DBPlaceDao implements PlaceDao {
 
     public boolean updateRate(Place place) throws SQLException {
         if(checkPlaceInDB(place)){
-            String sqlQuery = String.format("SELECT count, rate FROM %s WHERE name = '%s' address = '%s';", tableName, place.getName(), place.getAddress());
+            String sqlQuery = String.format("SELECT count, rate FROM %s WHERE name = '%s' AND address = '%s';", tableName, place.getName(), place.getAddress());
             Statement stmt = getConnection().createStatement();
             ResultSet rs = stmt.executeQuery(sqlQuery);
-            String sqlQuery1 = String.format("UPDATE %s\nSET rate = %s, count = %s\nWHERE type = '%s', name = '%s';",
+            rs.next();
+            String sqlQuery1 = String.format("UPDATE %s\nSET rate = %s, count = %s\nWHERE type = '%s' AND name = '%s';",
                     tableName, rs.getInt("rate") + place.getRate(), rs.getInt("count") + 1, place.getType(), place.getName());
             stmt.executeUpdate(sqlQuery1);
             return true;
