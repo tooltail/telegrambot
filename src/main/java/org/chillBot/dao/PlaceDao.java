@@ -8,4 +8,5 @@ import java.util.List;
 public interface PlaceDao {
     List<Place> getAllPlaces() throws SQLException;
     boolean addPlace(Place place) throws SQLException;
+    boolean updateRate(Place place) throws SQLException;
 }

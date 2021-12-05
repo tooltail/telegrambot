@@ -40,4 +40,8 @@ public class Bot implements IBot {
         }
         return formattedOutput;
     }
+
+    public boolean addRate(Place place) throws SQLException {
+        return placeDao.updateRate(place);
+    }
 }

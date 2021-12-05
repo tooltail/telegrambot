@@ -7,37 +7,45 @@ import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
-public class AddCommandArgumentsHandler {
+public class CommandArgumentsHandler {
 
-    private Integer addCommandArguments = 3;
+    private Integer countCommandArguments;
+
+    private Integer currentCommandArgument = 0;
 
     private Place place;
 
     private Controller controller;
 
-    public AddCommandArgumentsHandler(Controller controller) {
+    public CommandArgumentsHandler(Controller controller, Integer countCommandArguments) {
         place = new Place();
         this.controller = controller;
+        this.countCommandArguments = countCommandArguments;
     }
 
     public boolean isEnd() {
-        if (addCommandArguments == 0)
+        if (countCommandArguments == currentCommandArgument)
             return true;
         return false;
     }
 
     public void addArgument(String argument) throws TelegramApiException, ClientException, ApiException {
-        if (addCommandArguments == 3) {
+        if (currentCommandArgument == 0) {
             place.setType(argument);
             controller.sendMessageToUser("Enter the name of the establishment:");
-            addCommandArguments--;
-        } else if (addCommandArguments == 2) {
+            currentCommandArgument++;
+        } else if (currentCommandArgument == 1) {
             place.setName(argument);
             controller.sendMessageToUser("Enter the address of the establishment:");
-            addCommandArguments--;
-        } else if (addCommandArguments == 1) {
+            currentCommandArgument++;
+        } else if (currentCommandArgument == 2) {
             place.setAddress(argument);
-            addCommandArguments--;
+            currentCommandArgument++;
+        }
+        else if (currentCommandArgument == 3){
+            controller.sendMessageToUser("Rate the establishment (between 1 and 5):");
+            place.setRate(Double.parseDouble(argument));
+            currentCommandArgument++;
         }
     }
 

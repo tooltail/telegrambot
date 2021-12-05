@@ -31,6 +31,10 @@ public class Place {
         this.address = address;
     }
 
+    public Double getRate() { return rate; }
+
+    public void setRate(Double rate) { this.rate = rate; }
+
     /**
      * Contains the type of establishment
      */
@@ -46,6 +50,11 @@ public class Place {
      */
     private String address;
 
+    /**
+     * Average rate
+     */
+    private Double rate;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,10 +68,11 @@ public class Place {
         return Objects.hash(type, name, address);
     }
 
-    public Place(String type, String name, String address) {
+    public Place(String type, String name, String address, Double rate) {
         this.type = type;
         this.name = name;
         this.address = address;
+        this.rate = rate;
     }
 
     public Place() { }
