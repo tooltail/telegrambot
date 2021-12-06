@@ -15,7 +15,7 @@ public class AddCommandTest {
      */
     @Test
     public void testAddPlace() throws SQLException {
-        Place place = new Place("Bar", "Televisor", "Radisheva, 4", 1.0);
+        Place place = new Place("Bar", "Televisor", "Radisheva, 4");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
         Bot bot = new Bot(placeDao);
         boolean result = bot.addPlace(place);
@@ -30,7 +30,7 @@ public class AddCommandTest {
      */
     @Test
     public void testAddSamePlaces() throws SQLException {
-        Place place = new Place("Bar", "Melodiya", "Pervomayskaya, 36", 1.0);
+        Place place = new Place("Bar", "Melodiya", "Pervomayskaya, 36");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
         Bot bot = new Bot(placeDao);
         boolean result = bot.addPlace(place);

@@ -68,6 +68,7 @@ public class CommandHandler {
             if (commandArgumentsHandler.isEnd()) {
                 Place place = commandArgumentsHandler.getPlace();
                 bot.addRate(place);
+                controller.sendMessageToUser("Your rate was added ;)");
                 currentCommand = null;
             }
         }

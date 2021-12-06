@@ -68,6 +68,12 @@ public class Place {
         return Objects.hash(type, name, address);
     }
 
+    public Place(String type, String name, String address) {
+        this.type = type;
+        this.name = name;
+        this.address = address;
+    }
+
     public Place(String type, String name, String address, Double rate) {
         this.type = type;
         this.name = name;

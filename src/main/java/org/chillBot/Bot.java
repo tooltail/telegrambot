@@ -40,7 +40,7 @@ public class Bot implements IBot {
                         place.getAddress());
             }
             else {
-                result = String.format("%s (%s)  %.2f",
+                result = String.format("%s (%s) %.2f/5",
                         place.getName(),
                         place.getAddress(),
                         place.getRate());

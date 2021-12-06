@@ -113,6 +113,5 @@ public class DBPlaceDao implements PlaceDao {
             return true;
         }
         return false;
-
     }
 }

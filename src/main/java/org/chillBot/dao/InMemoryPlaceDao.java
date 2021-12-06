@@ -1,8 +1,9 @@
 package org.chillBot.dao;
 
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.chillBot.Place;
 import org.chillBot.dao.PlaceDao;
-
 import java.sql.SQLException;
 import java.util.*;
 
@@ -13,13 +14,24 @@ public class InMemoryPlaceDao implements PlaceDao {
      */
     private Set<Place> places = new LinkedHashSet<>();
 
+    private HashMap<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
     /**
      * Gets all places
      * @return all places from in memory db
      */
     @Override
     public List<Place> getAllPlaces() {
-        return new ArrayList<>(places);
+        ArrayList<Place> arrayList = new ArrayList<>();
+        for (Place place : places) {
+            if (placePairDictionary.containsKey(place) && placePairDictionary.get(place).getValue() != 0) {
+                place.setRate(placePairDictionary.get(place).getKey() / placePairDictionary.get(place).getValue());
+            }
+            else {
+                place.setRate(-1.0);
+            }
+            arrayList.add(place);
+        }
+        return arrayList;
     }
 
     /**
@@ -45,12 +57,22 @@ public class InMemoryPlaceDao implements PlaceDao {
         }
         else {
             places.add(place);
+            Pair<Double, Double> pair = new MutablePair<>(0.0, 0.0);
+            placePairDictionary.put(place, pair);
             return true;
         }
     }
 
     @Override
     public boolean updateRate(Place place) throws SQLException {
+        if (places.contains(place)) {
+            Pair<Double, Double> oldValue = placePairDictionary.get(place);
+            Double rate = oldValue.getKey();
+            Double count = oldValue.getValue();
+            Pair<Double, Double> pair = new MutablePair<>(rate + place.getRate(), count + 1);
+            placePairDictionary.replace(place, oldValue, pair);
+            return true;
+        }
         return false;
     }
 }

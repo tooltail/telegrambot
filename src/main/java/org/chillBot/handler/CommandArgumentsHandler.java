@@ -49,8 +49,14 @@ public class CommandArgumentsHandler {
             }
             currentCommandArgument++;
         } else if (currentCommandArgument == 3){
-            place.setRate(Double.parseDouble(argument));
-            currentCommandArgument++;
+            Double rate = Double.parseDouble(argument);
+            if (rate >= 1 && rate <= 5) {
+                place.setRate(rate);
+                currentCommandArgument++;
+            }
+            else {
+                controller.sendMessageToUser("The rate must be between 1 and 5");
+            }
         }
     }
 
