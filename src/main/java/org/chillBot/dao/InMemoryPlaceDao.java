@@ -63,6 +63,12 @@ public class InMemoryPlaceDao implements PlaceDao {
         }
     }
 
+    /**
+     * Updates rating of the place in memory
+     * @param place
+     * @return True if rating was added, else False
+     * @throws SQLException
+     */
     @Override
     public boolean updateRate(Place place) throws SQLException {
         if (places.contains(place)) {

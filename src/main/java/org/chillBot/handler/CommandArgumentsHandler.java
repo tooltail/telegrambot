@@ -27,12 +27,22 @@ public class CommandArgumentsHandler {
         this.currentCommand = currentCommand;
     }
 
+    /**
+     * Check if all the arguments was inputted
+     */
     public boolean isEnd() {
         if (countCommandArguments == currentCommandArgument)
             return true;
         return false;
     }
 
+    /**
+     * Forms class Place by adding all inputted arguments
+     * @param argument
+     * @throws TelegramApiException
+     * @throws ClientException
+     * @throws ApiException
+     */
     public void addArgument(String argument) throws TelegramApiException, ClientException, ApiException {
         if (currentCommandArgument == 0) {
             place.setType(argument);
@@ -60,6 +70,9 @@ public class CommandArgumentsHandler {
         }
     }
 
+    /**
+     * Returns already formed class Place
+     */
     public Place getPlace() {
         return place;
     }

@@ -101,6 +101,12 @@ public class DBPlaceDao implements PlaceDao {
         }
     }
 
+    /**
+     * Updates rating in database
+     * @param place
+     * @return update was succesful - True, else - False
+     * @throws SQLException
+     */
     public boolean updateRate(Place place) throws SQLException {
         if(checkPlaceInDB(place)){
             String sqlQuery = String.format("SELECT count, rate FROM %s WHERE name = '%s' AND address = '%s';", tableName, place.getName(), place.getAddress());
