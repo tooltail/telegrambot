@@ -1,6 +1,5 @@
 package org.chillBot;
 
-import org.apache.ibatis.jdbc.SQL;
 import org.chillBot.dao.InMemoryPlaceDao;
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class RateCommandTest {
     public void testIfBarHasNoRating() throws SQLException {
         Place place1 = new Place("Bar", "Televisor", "Radisheva, 4");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao);
+        BotFunction bot = new BotFunction(placeDao);
         bot.addPlace(place1);
         assertEquals("Televisor (Radisheva, 4) Bar hasn't rated yet", bot.getAllPlaces().get(0));
     }
@@ -30,12 +29,12 @@ public class RateCommandTest {
     public void testIfBarHasRating() throws SQLException {
         Place place1 = new Place("Bar", "Televisor", "Radisheva, 4");
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
-        Bot bot = new Bot(placeDao);
+        BotFunction bot = new BotFunction(placeDao);
         bot.addPlace(place1);
         place1.setRate(4.0);
         bot.addRate(place1);
         place1.setRate(5.0);
         bot.addRate(place1);
-        assertEquals("Televisor (Radisheva, 4) 4.50/5", bot.getAllPlaces().get(0));
+        assertEquals("Televisor (Radisheva, 4) 4.5/5", bot.getAllPlaces().get(0));
     }
 }

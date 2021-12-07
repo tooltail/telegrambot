@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Functions of the bot
  */
-public class Bot implements IBot {
+public class BotFunction implements IBot {
 
     private PlaceDao placeDao;
 
-    public Bot (PlaceDao placeDao) {
+    public BotFunction(PlaceDao placeDao) {
         this.placeDao = placeDao;
     }
 
@@ -42,10 +42,10 @@ public class Bot implements IBot {
                         place.getAddress());
             }
             else {
-                result = String.format("%s (%s) %.2f/5",
+                result = String.format("%s (%s) %s/5",
                         place.getName(),
                         place.getAddress(),
-                        place.getRate());
+                        Double.parseDouble(String.format("%.2f", place.getRate())));
             }
             formattedOutput.add(result);
         }
