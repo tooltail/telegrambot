@@ -21,7 +21,7 @@ public class BarsCommandTest {
         bot.addPlace(place1);
         bot.addPlace(place2);
         assertEquals(2, bot.getAllPlaces().size());
-        assertEquals("Televisor (Radisheva, 4)", bot.getAllPlaces().get(0));
-        assertEquals("Melodiya (Pervomayskaya, 36)", bot.getAllPlaces().get(1));
+        assertEquals("Televisor (Radisheva, 4) Bar hasn't rated yet", bot.getAllPlaces().get(0));
+        assertEquals("Melodiya (Pervomayskaya, 36) Bar hasn't rated yet", bot.getAllPlaces().get(1));
     }
 }

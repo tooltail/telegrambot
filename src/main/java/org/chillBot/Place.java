@@ -31,6 +31,10 @@ public class Place {
         this.address = address;
     }
 
+    public Double getRate() { return rate; }
+
+    public void setRate(Double rate) { this.rate = rate; }
+
     /**
      * Contains the type of establishment
      */
@@ -45,6 +49,11 @@ public class Place {
      * Contains the address of establishment
      */
     private String address;
+
+    /**
+     * Average rate
+     */
+    private Double rate;
 
     @Override
     public boolean equals(Object o) {
@@ -63,6 +72,13 @@ public class Place {
         this.type = type;
         this.name = name;
         this.address = address;
+    }
+
+    public Place(String type, String name, String address, Double rate) {
+        this.type = type;
+        this.name = name;
+        this.address = address;
+        this.rate = rate;
     }
 
     public Place() { }

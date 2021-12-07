@@ -16,7 +16,7 @@ public class CommandHandler {
 
     private Command currentCommand;
 
-    private AddCommandArgumentsHandler addCommandArgumentsHandler;
+    private CommandArgumentsHandler commandArgumentsHandler;
 
     private Bot bot;
 
@@ -24,20 +24,29 @@ public class CommandHandler {
         bot = new Bot(new DBPlaceDao());
     }
 
+    /**
+     * handle the commands inputted by user
+     * @param message
+     * @param controller
+     * @throws TelegramApiException
+     * @throws ClientException
+     * @throws ApiException
+     * @throws SQLException
+     */
     public void processInput(String message, Controller controller) throws TelegramApiException, ClientException, ApiException, SQLException {
         if (message.equals("/add") || currentCommand == Command.addBar) {
             if (message.equals("/add")) {
                 currentCommand = Command.addBar;
-                addCommandArgumentsHandler = new AddCommandArgumentsHandler(controller);
+                commandArgumentsHandler = new CommandArgumentsHandler(controller, 3, currentCommand);
                 controller.sendMessageToUser("Select the category to which you want to add the establishment:");
             }
-            else if (!addCommandArgumentsHandler.isEnd()) {
-                addCommandArgumentsHandler.addArgument(message);
+            else if (!commandArgumentsHandler.isEnd()) {
+                commandArgumentsHandler.addArgument(message);
             }
-            if (addCommandArgumentsHandler.isEnd()) {
-                Place place = addCommandArgumentsHandler.getPlace();
+            if (commandArgumentsHandler.isEnd()) {
+                Place place = commandArgumentsHandler.getPlace();
                 if (bot.addPlace(place)) {
-                    controller.sendMessageToUser("Bar added to database\nYou can check list of bars. Type \\bars");
+                    controller.sendMessageToUser("Bar added to database\nYou can check list of bars. Type /bars");
                 }
                 else {
                     controller.sendMessageToUser("This place was already added");
@@ -54,6 +63,26 @@ public class CommandHandler {
                 for (String bar : bars) {
                     controller.sendMessageToUser(bar);
                 }
+            }
+        }
+        else if (message.equals("/rate") || currentCommand == Command.rateBar){
+            if (message.equals("/rate")) {
+                currentCommand = Command.rateBar;
+                commandArgumentsHandler = new CommandArgumentsHandler(controller, 4, currentCommand);
+                controller.sendMessageToUser("Select the category in which you want to rate the establishment:");
+            }
+            else if (!commandArgumentsHandler.isEnd()) {
+                commandArgumentsHandler.addArgument(message);
+            }
+            if (commandArgumentsHandler.isEnd()) {
+                Place place = commandArgumentsHandler.getPlace();
+                if(bot.addRate(place)) {
+                    controller.sendMessageToUser("Your rate was added ;)");
+                }
+                else {
+                    controller.sendMessageToUser("Bar not found. Type /add to add the bar");
+                }
+                currentCommand = null;
             }
         }
     }
