@@ -17,7 +17,7 @@ public class InMemoryPlaceDao implements PlaceDao {
      */
     private Set<Place> places = new LinkedHashSet<>();
 
-    private HashMap<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
+    private Map<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
     /**
      * Gets all places
      * @return all places from in memory db
