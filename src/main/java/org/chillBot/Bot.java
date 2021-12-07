@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Functions of the bot
+ */
 public class Bot implements IBot {
 
     private PlaceDao placeDao;

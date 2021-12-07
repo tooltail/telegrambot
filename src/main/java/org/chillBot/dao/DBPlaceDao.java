@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Interaction with database
+ */
 public class DBPlaceDao implements PlaceDao {
 
     /**

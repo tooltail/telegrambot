@@ -7,7 +7,9 @@ import org.chillBot.Place;
 import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-
+/**
+ * Process command arguments
+ */
 public class CommandArgumentsHandler {
 
     private Integer countCommandArguments;

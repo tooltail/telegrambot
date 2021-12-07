@@ -11,14 +11,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
 
+/**
+ * Interaction with user in Telegram
+ */
 public class TelegramController extends TelegramLongPollingBot implements Controller {
+
+    private Long chatId;
+    private CommandHandler commandHandler;
 
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
-
-    private Long chatId;
-    private CommandHandler commandHandler;
 
     public TelegramController () {
         commandHandler = new CommandHandler();
