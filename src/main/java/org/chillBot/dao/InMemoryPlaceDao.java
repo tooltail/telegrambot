@@ -7,6 +7,9 @@ import org.chillBot.dao.PlaceDao;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Interaction with data in memory
+ */
 public class InMemoryPlaceDao implements PlaceDao {
 
     /**

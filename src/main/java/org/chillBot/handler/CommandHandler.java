@@ -12,6 +12,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Process commands
+ */
 public class CommandHandler {
 
     private Command currentCommand;
@@ -25,7 +28,7 @@ public class CommandHandler {
     }
 
     /**
-     * handle the commands inputted by user
+     * Handles the commands inputted by user
      * @param message
      * @param controller
      * @throws TelegramApiException

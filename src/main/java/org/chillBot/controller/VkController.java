@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Interaction with user in Vkontakte
+ */
 public class VkController implements Controller {
 
     private VkApiClient vk;
