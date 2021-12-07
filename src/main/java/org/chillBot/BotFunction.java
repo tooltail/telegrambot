@@ -45,7 +45,7 @@ public class BotFunction implements IBot {
                 result = String.format("%s (%s) %s/5",
                         place.getName(),
                         place.getAddress(),
-                        Double.parseDouble(String.format("%.2f", place.getRate())));
+                        String.format("%.2f", place.getRate()));
             }
             formattedOutput.add(result);
         }

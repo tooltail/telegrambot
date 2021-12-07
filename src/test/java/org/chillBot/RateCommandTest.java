@@ -35,6 +35,6 @@ public class RateCommandTest {
         bot.addRate(place1);
         place1.setRate(5.0);
         bot.addRate(place1);
-        assertEquals("Televisor (Radisheva, 4) 4.5/5", bot.getAllPlaces().get(0));
+        assertEquals("Televisor (Radisheva, 4) 4,50/5", bot.getAllPlaces().get(0));
     }
 }
