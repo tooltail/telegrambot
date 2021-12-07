@@ -5,6 +5,7 @@ import org.chillBot.dao.PlaceDao;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Functions of the bot
@@ -45,7 +46,7 @@ public class BotFunction implements IBot {
                 result = String.format("%s (%s) %s/5",
                         place.getName(),
                         place.getAddress(),
-                        String.format("%.2f", place.getRate()));
+                        String.format(Locale.GERMANY, "%.2f", place.getRate()));
             }
             formattedOutput.add(result);
         }
