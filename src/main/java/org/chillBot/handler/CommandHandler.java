@@ -2,7 +2,7 @@ package org.chillBot.handler;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import org.chillBot.Bot;
+import org.chillBot.BotFunction;
 import org.chillBot.Command;
 import org.chillBot.Place;
 import org.chillBot.controller.Controller;
@@ -21,10 +21,10 @@ public class CommandHandler {
 
     private CommandArgumentsHandler commandArgumentsHandler;
 
-    private Bot bot;
+    private BotFunction bot;
 
     public CommandHandler() {
-        bot = new Bot(new DBPlaceDao());
+        bot = new BotFunction(new DBPlaceDao());
     }
 
     /**

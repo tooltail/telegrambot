@@ -5,15 +5,16 @@ import org.chillBot.dao.PlaceDao;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Functions of the bot
  */
-public class Bot implements IBot {
+public class BotFunction implements IBot {
 
     private PlaceDao placeDao;
 
-    public Bot (PlaceDao placeDao) {
+    public BotFunction(PlaceDao placeDao) {
         this.placeDao = placeDao;
     }
 
@@ -42,10 +43,10 @@ public class Bot implements IBot {
                         place.getAddress());
             }
             else {
-                result = String.format("%s (%s) %.2f/5",
+                result = String.format("%s (%s) %s/5",
                         place.getName(),
                         place.getAddress(),
-                        place.getRate());
+                        String.format(Locale.GERMANY, "%.2f", place.getRate()));
             }
             formattedOutput.add(result);
         }
