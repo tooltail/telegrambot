@@ -2,8 +2,6 @@ package org.chillBot.dao;
 
 import org.chillBot.Place;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +26,8 @@ public class DBPlaceDao implements PlaceDao {
      */
     private final String tableName = "place";
 
+    private Integer startIdx = 1;
+
     /**
      * Gets connection to postgresql database
      * @return connection to postgresql database
@@ -44,7 +44,8 @@ public class DBPlaceDao implements PlaceDao {
      */
     @Override
     public List<Place> getAllPlaces() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s", tableName);
+        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
+        startIdx += 3;
         List<Place> places = new LinkedList<>();
         Statement stmt = getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);

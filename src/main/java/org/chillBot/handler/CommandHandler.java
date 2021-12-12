@@ -23,6 +23,8 @@ public class CommandHandler {
 
     private BotFunction bot;
 
+    private boolean flag = false;
+
     public CommandHandler() {
         bot = new BotFunction(new DBPlaceDao());
     }
@@ -59,13 +61,21 @@ public class CommandHandler {
         }
         else if (message.equals("/bars")) {
             List<String> bars = bot.getAllPlaces();
-            if (bars.size() == 0) {
+            if (bars.size() == 0 && !flag) {
                 controller.sendMessageToUser("No bars added yet");
-            } else {
-                controller.sendMessageToUser("List of bars:");
+            }
+            else if (bars.size() == 0 && flag) {
+                controller.sendMessageToUser("No more bars to show.");
+            }
+            else {
+                if (!flag) {
+                    controller.sendMessageToUser("List of bars:");
+                }
+                flag = true;
                 for (String bar : bars) {
                     controller.sendMessageToUser(bar);
                 }
+                controller.requestMoreBars();
             }
         }
         else if (message.equals("/rate") || currentCommand == Command.rateBar){

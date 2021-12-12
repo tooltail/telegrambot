@@ -57,10 +57,11 @@ public class CommandArgumentsHandler {
         } else if (currentCommandArgument == 2) {
             place.setAddress(argument);
             if (currentCommand == Command.rateBar) {
-                controller.sendMessageToUser("Rate the establishment (between 1 and 5):");
+                controller.requestRate();
             }
             currentCommandArgument++;
         } else if (currentCommandArgument == 3){
+            controller.sendMessageToUser(String.format("%s", argument));
             Double rate = Double.parseDouble(argument);
             if (rate >= 1 && rate <= 5) {
                 place.setRate(rate);
