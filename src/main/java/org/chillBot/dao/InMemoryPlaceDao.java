@@ -3,7 +3,6 @@ package org.chillBot.dao;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.chillBot.Place;
-import org.chillBot.dao.PlaceDao;
 import java.sql.SQLException;
 import java.util.*;
 

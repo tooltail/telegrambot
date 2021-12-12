@@ -35,6 +35,14 @@ public class Place {
 
     public void setRate(Double rate) { this.rate = rate; }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     /**
      * Contains the type of establishment
      */
@@ -55,6 +63,8 @@ public class Place {
      */
     private Double rate;
 
+    private Location location;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,11 +84,12 @@ public class Place {
         this.address = address;
     }
 
-    public Place(String type, String name, String address, Double rate) {
+    public Place(String type, String name, String address, Double rate, Location location) {
         this.type = type;
         this.name = name;
         this.address = address;
         this.rate = rate;
+        this.location = location;
     }
 
     public Place() { }

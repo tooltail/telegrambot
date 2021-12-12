@@ -2,8 +2,9 @@ package org.chillBot.handler;
 
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import org.chillBot.BotFunction;
+import org.chillBot.BotFunctionality;
 import org.chillBot.Command;
+import org.chillBot.Location;
 import org.chillBot.Place;
 import org.chillBot.controller.Controller;
 import org.chillBot.dao.DBPlaceDao;
@@ -21,10 +22,10 @@ public class CommandHandler {
 
     private CommandArgumentsHandler commandArgumentsHandler;
 
-    private BotFunction bot;
+    private BotFunctionality bot;
 
     public CommandHandler() {
-        bot = new BotFunction(new DBPlaceDao());
+        bot = new BotFunctionality(new DBPlaceDao());
     }
 
     /**
@@ -86,6 +87,29 @@ public class CommandHandler {
                     controller.sendMessageToUser("Bar not found. Type /add to add the bar");
                 }
                 currentCommand = null;
+            }
+        }
+        else if (message.equals("/search") || currentCommand == Command.location) {
+            Location userLocation = null;
+            if (message.equals("/search")) {
+                controller.requestLocation();
+                currentCommand = Command.location;
+                commandArgumentsHandler = new CommandArgumentsHandler(controller, 1, currentCommand);
+            }
+            else if (!commandArgumentsHandler.isEnd()) {
+                userLocation = commandArgumentsHandler.getLocation(message);
+                //controller.sendMessageToUser(String.format("%s %s", userLocation.getLatitude(), userLocation.getLongitude()));
+            }
+            if (commandArgumentsHandler.isEnd()) {
+                List<String> bars = bot.getNearestPlace(userLocation);
+                if (bars.size() == 0) {
+                    controller.sendMessageToUser("No bars added yet");
+                } else {
+                    controller.sendMessageToUser("Nearest bars:");
+                    for (String bar : bars) {
+                        controller.sendMessageToUser(bar);
+                    }
+                }
             }
         }
     }

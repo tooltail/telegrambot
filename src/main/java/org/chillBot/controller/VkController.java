@@ -43,6 +43,11 @@ public class VkController implements Controller {
         vk.messages().send(actor).message(text).userId(chatId).randomId(new Random().nextInt(10000)).execute();
     }
 
+    @Override
+    public void requestLocation() throws TelegramApiException {
+
+    }
+
     public void startupController() throws ClientException, ApiException, InterruptedException {
         while (true) {
             MessagesGetLongPollHistoryQuery historyQuery = vk.messages().getLongPollHistory(actor).ts(ts);
