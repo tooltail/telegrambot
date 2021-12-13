@@ -14,12 +14,12 @@ public class DBPlaceDao implements PlaceDao {
     /**
      * Contains username postgresql database
      */
-    private final String user = "vebprrcpybjbcr";
+    private final String user = "postgres";
 
     /**
      * Contains password postgresql database
      */
-    private final String password = "23804c420e0a6530689ff6a2732414f997cdbfc19e39a8edb51f4ff01c197f52";
+    private final String password = "u_8h,B:vV+z[UzK";
 
     /**
      * Contains table
@@ -34,7 +34,7 @@ public class DBPlaceDao implements PlaceDao {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://ec2-176-34-105-15.eu-west-1.compute.amazonaws.com:5432/daooeglk463q48", user, password);
+        return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/telegrambot_schema", user, password);
     }
 
     /**
