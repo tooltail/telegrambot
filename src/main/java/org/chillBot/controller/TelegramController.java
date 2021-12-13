@@ -34,12 +34,12 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         commandHandler = new CommandHandler();
     }
 
-    private List<InlineKeyboardButton> addButtonsToRow(String[] data) {
+    private List<InlineKeyboardButton> addRateButtonsToRow() {
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             InlineKeyboardButton rateButton = new InlineKeyboardButton();
-            rateButton.setText(data[i]);
-            rateButton.setCallbackData(data[i]);
+            rateButton.setText(String.valueOf(i));
+            rateButton.setCallbackData(String.valueOf(i));
             keyboardButtonsRow.add(rateButton);
         }
         return keyboardButtonsRow;
@@ -47,7 +47,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     public void requestRate() throws TelegramApiException {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<InlineKeyboardButton> keyboardButtonsRow = addButtonsToRow(new String[] {"1", "2", "3", "4", "5"});
+        List<InlineKeyboardButton> keyboardButtonsRow = addRateButtonsToRow();
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow);
         inlineKeyboardMarkup.setKeyboard(rowList);
@@ -110,11 +110,11 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
                 telegramController.setChatId(update.getCallbackQuery().getMessage().getChatId());
                 commandHandler.processInput(update.getCallbackQuery().getData(), telegramController);
 
-                long messageId = update.getCallbackQuery().getMessage().getMessageId();
-                long chat_id = update.getCallbackQuery().getMessage().getChatId();
+                long callbackMessageId = update.getCallbackQuery().getMessage().getMessageId();
+                long callbackChatId = update.getCallbackQuery().getMessage().getChatId();
                 DeleteMessage deleteMessage = new DeleteMessage();
-                deleteMessage.setChatId(String.valueOf(chat_id));
-                deleteMessage.setMessageId(toIntExact(messageId));
+                deleteMessage.setChatId(String.valueOf(callbackChatId));
+                deleteMessage.setMessageId(toIntExact(callbackMessageId));
                 execute(deleteMessage);
             } catch (TelegramApiException | ClientException | ApiException | SQLException e) {
                 e.printStackTrace();

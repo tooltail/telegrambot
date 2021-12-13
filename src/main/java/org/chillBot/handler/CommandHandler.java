@@ -23,7 +23,7 @@ public class CommandHandler {
 
     private BotFunction bot;
 
-    private boolean flag = false;
+    private boolean isFirstOutput = true;
 
     public CommandHandler() {
         bot = new BotFunction(new DBPlaceDao());
@@ -61,17 +61,17 @@ public class CommandHandler {
         }
         else if (message.equals("/bars")) {
             List<String> bars = bot.getAllPlaces();
-            if (bars.size() == 0 && !flag) {
+            if (bars.size() == 0 && isFirstOutput) {
                 controller.sendMessageToUser("No bars added yet");
             }
-            else if (bars.size() == 0 && flag) {
+            else if (bars.size() == 0 && !isFirstOutput) {
                 controller.sendMessageToUser("No more bars to show.");
             }
             else {
-                if (!flag) {
+                if (isFirstOutput) {
                     controller.sendMessageToUser("List of bars:");
+                    isFirstOutput = false;
                 }
-                flag = true;
                 for (String bar : bars) {
                     controller.sendMessageToUser(bar);
                 }
@@ -89,10 +89,11 @@ public class CommandHandler {
             }
             if (commandArgumentsHandler.isEnd()) {
                 Place place = commandArgumentsHandler.getPlace();
-                if(bot.addRate(place)) {
+                if (bot.addRate(place)) {
                     controller.sendMessageToUser("Your rate was added ;)");
                 }
                 else {
+                    controller.sendMessageToUser(String.format("%s %s %s %s", place.getType(), place.getName(), place.getAddress(), place.getRate()));
                     controller.sendMessageToUser("Bar not found. Type /add to add the bar");
                 }
                 currentCommand = null;
