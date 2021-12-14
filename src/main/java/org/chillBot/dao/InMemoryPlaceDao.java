@@ -17,6 +17,33 @@ public class InMemoryPlaceDao implements PlaceDao {
     private Set<Place> places = new LinkedHashSet<>();
 
     private Map<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
+
+    private Integer startIdx = 1;
+
+    @Override
+    public void updateStartIdx() {
+        startIdx = 1;
+    }
+
+    @Override
+    public List<Place> getPlacesPartly() throws SQLException {
+        Integer currIdx = 1;
+        List<Place> arrayList = new ArrayList<>();
+        for (Place place : places) {
+            if (currIdx >= startIdx && currIdx <= startIdx + 2) {
+                if (placePairDictionary.containsKey(place) && placePairDictionary.get(place).getValue() != 0) {
+                    place.setRate(placePairDictionary.get(place).getKey() / placePairDictionary.get(place).getValue());
+                }
+                else {
+                    place.setRate(-1.0);
+                }
+                arrayList.add(place);
+            }
+        }
+        startIdx += 3;
+        return arrayList;
+    }
+
     /**
      * Gets all places
      * @return all places from in memory db
@@ -54,6 +81,7 @@ public class InMemoryPlaceDao implements PlaceDao {
         place.setType(convertToStringWithCapitalLetter(place.getType()));
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
+        place.setRate(-1.0);
         if (places.contains(place)) {
             return false;
         }

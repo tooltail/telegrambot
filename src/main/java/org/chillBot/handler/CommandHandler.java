@@ -60,7 +60,7 @@ public class CommandHandler {
             }
         }
         else if (message.equals("/bars")) {
-            List<String> bars = bot.getAllPlaces();
+            List<String> bars = bot.getPlacesPartly();
             if (bars.size() == 0 && isFirstOutput) {
                 controller.sendMessageToUser("No bars added yet");
             }
@@ -93,7 +93,6 @@ public class CommandHandler {
                     controller.sendMessageToUser("Your rate was added ;)");
                 }
                 else {
-                    controller.sendMessageToUser(String.format("%s %s %s %s", place.getType(), place.getName(), place.getAddress(), place.getRate()));
                     controller.sendMessageToUser("Bar not found. Type /add to add the bar");
                 }
                 currentCommand = null;
