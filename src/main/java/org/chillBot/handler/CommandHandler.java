@@ -64,7 +64,7 @@ public class CommandHandler {
             if (bars.size() == 0 && isFirstOutput) {
                 controller.sendMessageToUser("No bars added yet");
             }
-            else if (bars.size() == 0 && !isFirstOutput) {
+            else if (bars.size() == 0) {
                 controller.sendMessageToUser("No more bars to show.");
             }
             else {
