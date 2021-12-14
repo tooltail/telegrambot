@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * Functions of the bot
  */
-public class BotFunction implements IBot {
+public class BotFunction implements IBotFunction {
 
     private PlaceDao placeDao;
 
@@ -32,8 +32,11 @@ public class BotFunction implements IBot {
      * Gets list of bars
      * @throws SQLException
      */
-    public List<String> getAllPlaces() throws SQLException {
-        List<Place> places = placeDao.getAllPlaces();
+    public List<String> getPlacesPartly() throws SQLException {
+        List<Place> places = placeDao.getPlacesPartly();
+        if (places.size() == 0) {
+            placeDao.updateStartIdx();
+        }
         List<String> formattedOutput = new LinkedList<>();
         for (Place place : places) {
             String result;

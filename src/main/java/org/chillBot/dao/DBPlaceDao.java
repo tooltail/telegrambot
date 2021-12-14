@@ -2,8 +2,6 @@ package org.chillBot.dao;
 
 import org.chillBot.Place;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +24,9 @@ public class DBPlaceDao implements PlaceDao {
     /**
      * Contains table
      */
-    private final String tableName = "place";
+    private final String tableName = "placeTask2";
+
+    private Integer startIdx = 1;
 
     /**
      * Gets connection to postgresql database
@@ -42,7 +42,27 @@ public class DBPlaceDao implements PlaceDao {
      * @return list of bars
      * @throws SQLException
      */
-    @Override
+
+    public void updateStartIdx() {
+        startIdx = 1;
+    }
+
+    public List<Place> getPlacesPartly() throws SQLException {
+        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
+        startIdx += 3;
+        List<Place> places = new LinkedList<>();
+        Statement stmt = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        while (rs.next()) {
+            Place place = new Place(rs.getString("type"),
+                    rs.getString("name"),
+                    rs.getString("address"),
+                    (rs.getInt("count") != 0 ? (double)rs.getInt("rate")/rs.getInt("count") : -1));
+            places.add(place);
+        }
+        return places;
+    }
+
     public List<Place> getAllPlaces() throws SQLException {
         String sqlQuery = String.format("SELECT * FROM %s", tableName);
         List<Place> places = new LinkedList<>();
