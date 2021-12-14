@@ -43,5 +43,5 @@
     Rate the establishment (between 1 and 5): <br />
         *100* <br />
     The rate must be between 1 and 5 <br />
-        *5* <br />
+        *(buttons from 1 to 5)* <br />
     Your rate was added ;)
