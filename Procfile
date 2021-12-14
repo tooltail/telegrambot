@@ -1,1 +1,1 @@
-worker: java -jar target/telegrambot-1.0.jar-with-dependencies.jar
+worker: sh target/bin/workerBot
