@@ -1,1 +1,1 @@
-web: java -jar target/telegrambot-1.0.jar
+worker: java -jar target/telegrambot-1.0.jar
