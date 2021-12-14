@@ -47,9 +47,13 @@ public class DBPlaceDao implements PlaceDao {
         startIdx = 1;
     }
 
-    public List<Place> getPlacesPartly() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
-        startIdx += 3;
+    /**
+     * form places list by sqlQuery
+     * @param sqlQuery
+     * @return
+     * @throws SQLException
+     */
+    private List<Place> formPlacesList(String sqlQuery) throws SQLException {
         List<Place> places = new LinkedList<>();
         Statement stmt = getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
@@ -63,19 +67,25 @@ public class DBPlaceDao implements PlaceDao {
         return places;
     }
 
+    /**
+     * get 3 bars every time
+     * @return
+     * @throws SQLException
+     */
+    public List<Place> getPlacesPartly() throws SQLException {
+        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
+        startIdx += 3;
+        return formPlacesList(sqlQuery);
+    }
+
+    /**
+     * get all bars
+     * @return
+     * @throws SQLException
+     */
     public List<Place> getAllPlaces() throws SQLException {
         String sqlQuery = String.format("SELECT * FROM %s", tableName);
-        List<Place> places = new LinkedList<>();
-        Statement stmt = getConnection().createStatement();
-        ResultSet rs = stmt.executeQuery(sqlQuery);
-        while (rs.next()) {
-            Place place = new Place(rs.getString("type"),
-                    rs.getString("name"),
-                    rs.getString("address"),
-                    (rs.getInt("count") != 0 ? (double)rs.getInt("rate")/rs.getInt("count") : -1));
-            places.add(place);
-        }
-        return places;
+        return formPlacesList(sqlQuery);
     }
 
     /**

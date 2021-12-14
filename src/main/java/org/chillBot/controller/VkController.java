@@ -49,7 +49,7 @@ public class VkController implements Controller {
     }
 
     @Override
-    public void requestMoreBars() throws TelegramApiException {
+    public void requestMoreBars() {
 
     }
 

@@ -34,6 +34,10 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         commandHandler = new CommandHandler();
     }
 
+    /**
+     * Create Inline keyboard with buttons 1-5
+     * @return
+     */
     private List<InlineKeyboardButton> addRateButtonsToRow() {
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
@@ -45,6 +49,10 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         return keyboardButtonsRow;
     }
 
+    /**
+     * Send keyboard with rating buttons to user
+     * @throws TelegramApiException
+     */
     public void requestRate() throws TelegramApiException {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<InlineKeyboardButton> keyboardButtonsRow = addRateButtonsToRow();
@@ -58,6 +66,10 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
                 .build());
     }
 
+    /**
+     * Send button to show more bars
+     * @throws TelegramApiException
+     */
     public void requestMoreBars() throws TelegramApiException {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton moreButton = new InlineKeyboardButton();

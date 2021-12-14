@@ -56,6 +56,12 @@ public class BotFunction implements IBotFunction {
         return formattedOutput;
     }
 
+    /**
+     * Add rate to place
+     * @param place
+     * @return
+     * @throws SQLException
+     */
     public boolean addRate(Place place) throws SQLException {
         return placeDao.updateRate(place);
     }
