@@ -18,15 +18,17 @@ public class InMemoryPlaceDao implements PlaceDao {
 
     private Map<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
 
-    private Integer startIdx = 1;
-
-    @Override
-    public void updateStartIdx() {
-        startIdx = 1;
+    /**
+     * Converts string to string with capital letter
+     * @param str string to be converted
+     * @return converted string
+     */
+    private String convertToStringWithCapitalLetter(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
     @Override
-    public List<Place> getPlacesPartly() throws SQLException {
+    public List<Place> getPlaces(Integer startIdx, Integer endIdx) {
         Integer currIdx = 1;
         List<Place> arrayList = new ArrayList<>();
         for (Place place : places) {
@@ -40,36 +42,7 @@ public class InMemoryPlaceDao implements PlaceDao {
                 arrayList.add(place);
             }
         }
-        startIdx += 3;
         return arrayList;
-    }
-
-    /**
-     * Gets all places
-     * @return all places from in memory db
-     */
-    @Override
-    public List<Place> getAllPlaces() {
-        ArrayList<Place> arrayList = new ArrayList<>();
-        for (Place place : places) {
-            if (placePairDictionary.containsKey(place) && placePairDictionary.get(place).getValue() != 0) {
-                place.setRate(placePairDictionary.get(place).getKey() / placePairDictionary.get(place).getValue());
-            }
-            else {
-                place.setRate(-1.0);
-            }
-            arrayList.add(place);
-        }
-        return arrayList;
-    }
-
-    /**
-     * Converts string to string with capital letter
-     * @param str string to be converted
-     * @return converted string
-     */
-    private String convertToStringWithCapitalLetter(String str) {
-        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
     /**
@@ -81,7 +54,7 @@ public class InMemoryPlaceDao implements PlaceDao {
         place.setType(convertToStringWithCapitalLetter(place.getType()));
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
-        place.setRate(-1.0);
+        //place.setRate(-1.0);
         if (places.contains(place)) {
             return false;
         }

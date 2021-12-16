@@ -26,8 +26,6 @@ public class DBPlaceDao implements PlaceDao {
      */
     private final String tableName = "placeTask2";
 
-    private Integer startIdx = 1;
-
     /**
      * Gets connection to postgresql database
      * @return connection to postgresql database
@@ -38,22 +36,12 @@ public class DBPlaceDao implements PlaceDao {
     }
 
     /**
-     * Gets list of bars from database
-     * @return list of bars
-     * @throws SQLException
-     */
-
-    public void updateStartIdx() {
-        startIdx = 1;
-    }
-
-    /**
-     * form places list by sqlQuery
-     * @param sqlQuery
+     * get 3 bars every time
      * @return
      * @throws SQLException
      */
-    private List<Place> formPlacesList(String sqlQuery) throws SQLException {
+    public List<Place> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
+        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id < %s;", tableName, startIdx, endIdx);
         List<Place> places = new LinkedList<>();
         Statement stmt = getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
@@ -68,37 +56,21 @@ public class DBPlaceDao implements PlaceDao {
     }
 
     /**
-     * get 3 bars every time
-     * @return
-     * @throws SQLException
-     */
-    public List<Place> getPlacesPartly() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
-        startIdx += 3;
-        return formPlacesList(sqlQuery);
-    }
-
-    /**
-     * get all bars
-     * @return
-     * @throws SQLException
-     */
-    public List<Place> getAllPlaces() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s", tableName);
-        return formPlacesList(sqlQuery);
-    }
-
-    /**
      * Checks place in db
      * @param place place which checks in db
      * @return true if exists in db, false if not
      * @throws SQLException
      */
     private boolean checkPlaceInDB(Place place) throws SQLException {
-        List<Place> places = getAllPlaces();
-        for (Place pl: places) {
-            if (pl.equals(place))
-                return true;
+        String sqlQuery = String.format("SELECT * FROM %s WHERE type = '%s' AND name = '%s' AND address = '%s';",
+                tableName,
+                place.getType(),
+                place.getName(),
+                place.getAddress());
+        Statement stmt = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        if (rs.next()) {
+            return true;
         }
         return false;
     }

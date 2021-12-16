@@ -32,11 +32,8 @@ public class BotFunction implements IBotFunction {
      * Gets list of bars
      * @throws SQLException
      */
-    public List<String> getPlacesPartly() throws SQLException {
-        List<Place> places = placeDao.getPlacesPartly();
-        if (places.size() == 0) {
-            placeDao.updateStartIdx();
-        }
+    public List<String> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
+        List<Place> places = placeDao.getPlaces(startIdx, endIdx);
         List<String> formattedOutput = new LinkedList<>();
         for (Place place : places) {
             String result;

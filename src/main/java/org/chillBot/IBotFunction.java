@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IBotFunction {
     boolean addPlace(Place place) throws SQLException, TelegramApiException;
-    List<String> getPlacesPartly() throws SQLException;
+    List<String> getPlaces(Integer startIdx, Integer endIdx) throws SQLException;
     boolean addRate(Place place) throws SQLException, TelegramApiException;
 }
