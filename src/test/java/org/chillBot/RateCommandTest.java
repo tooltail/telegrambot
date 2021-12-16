@@ -7,6 +7,9 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Check /rate command
+ */
 public class RateCommandTest {
     /**
      * Check whether bot shows right rate (if nothing was added - Bar hasn't rated yet)

@@ -8,6 +8,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Check /bars command
+ */
 public class BarsCommandTest {
 
     /**

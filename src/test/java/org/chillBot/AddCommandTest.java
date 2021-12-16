@@ -7,6 +7,9 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
+/**
+ * Check /add command
+ */
 public class AddCommandTest {
 
     /**
