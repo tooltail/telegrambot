@@ -23,8 +23,6 @@ public class CommandHandler {
 
     private BotFunction bot;
 
-    private boolean isFirstOutput = true;
-
     private boolean isContextSwitched = false;
 
     private Integer startIdx = 1;

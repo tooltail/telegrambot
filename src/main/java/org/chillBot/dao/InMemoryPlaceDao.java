@@ -54,7 +54,6 @@ public class InMemoryPlaceDao implements PlaceDao {
         place.setType(convertToStringWithCapitalLetter(place.getType()));
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
-        //place.setRate(-1.0);
         if (places.contains(place)) {
             return false;
         }
@@ -73,7 +72,7 @@ public class InMemoryPlaceDao implements PlaceDao {
      * @throws SQLException
      */
     @Override
-    public boolean updateRate(Place place) throws SQLException {
+    public boolean updateRate(Place place) {
         if (places.contains(place)) {
             Pair<Double, Double> oldValue = placePairDictionary.get(place);
             Double rate = oldValue.getKey();

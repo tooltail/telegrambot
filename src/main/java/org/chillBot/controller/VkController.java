@@ -25,6 +25,16 @@ public class VkController implements Controller {
     private GroupActor actor;
     private CommandHandler commandHandler;
     private Integer chatId;
+    private static Integer groupId;
+    private static String botToken;
+
+    public static void setGroupId(Integer groupId) {
+        VkController.groupId = groupId;
+    }
+
+    public static void setBotToken(String botToken) {
+        VkController.botToken = botToken;
+    }
 
     public void setChatId(Integer chatId) {
         this.chatId = chatId;
@@ -33,7 +43,7 @@ public class VkController implements Controller {
     public VkController() throws ClientException, ApiException {
         TransportClient transportClient = new HttpTransportClient();
         vk = new VkApiClient(transportClient);
-        actor = new GroupActor(171475067, "433985e4d2ff9a987d05e893a1eb03940cf5026c345c525cfe0756577156ae07d6d1189d2025227b6985f");
+        actor = new GroupActor(groupId, botToken);
         ts = vk.messages().getLongPollServer(actor).execute().getTs();
         commandHandler = new CommandHandler();
     }
