@@ -25,16 +25,8 @@ public class VkController implements Controller {
     private GroupActor actor;
     private CommandHandler commandHandler;
     private Integer chatId;
-    private static Integer groupId;
-    private static String botToken;
-
-    public static void setGroupId(Integer groupId) {
-        VkController.groupId = groupId;
-    }
-
-    public static void setBotToken(String botToken) {
-        VkController.botToken = botToken;
-    }
+    private static Integer groupId = Integer.parseInt(System.getenv("VK_BOT_GROUP_ID"));
+    private static String botToken = System.getenv("VK_BOT_TOKEN");
 
     public void setChatId(Integer chatId) {
         this.chatId = chatId;

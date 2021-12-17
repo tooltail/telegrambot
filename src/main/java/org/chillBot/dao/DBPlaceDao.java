@@ -14,35 +14,19 @@ public class DBPlaceDao implements PlaceDao {
     /**
      * Contains password postgresql database
      */
-    private static String password;
+    private static String password = System.getenv("DATABASE_PASSWORD");
 
     /**
      * Contains table
      */
-    private static String tableName;
+    private static String tableName = System.getenv("DATABASE_TABLE_NAME");
 
     /**
      * Contains username postgresql database
      */
-    private static String user;
+    private static String user = System.getenv("DATABASE_USER");
 
-    private static String url;
-
-    public static void setUrl(String url) {
-        DBPlaceDao.url = url;
-    }
-
-    public static void setUser(String user) {
-        DBPlaceDao.user = user;
-    }
-
-    public static void setPassword(String password) {
-        DBPlaceDao.password = password;
-    }
-
-    public static void setTableName(String tableName) {
-        DBPlaceDao.tableName = tableName;
-    }
+    private static String url = System.getenv("DATABASE_URL");
 
     /**
      * Gets connection to postgresql database

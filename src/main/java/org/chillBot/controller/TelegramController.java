@@ -26,21 +26,14 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
     private Long chatId;
     private CommandHandler commandHandler;
 
-    private static String botUsername;
+    private static final String botUsername = System.getenv("TELEGRAM_BOT_USERNAME");
 
-    private static String botToken;
-
-    public static void setBotToken(String botToken) {
-        TelegramController.botToken = botToken;
-    }
+    private static String botToken = System.getenv("TELEGRAM_BOT_TOKEN");
 
     public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
 
-    public static void setBotUsername(String botUsername) {
-        TelegramController.botUsername = botUsername;
-    }
 
     public TelegramController () {
         commandHandler = new CommandHandler();

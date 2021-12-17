@@ -8,15 +8,11 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import java.io.IOException;
-
 /**
  * Entry point
  */
 public class Main {
-    public static void main(String[] args) throws TelegramApiException, ClientException, InterruptedException, ApiException, IOException {
-        ChillBotLoadPropertyValues chillBotGetPropertyValues = new ChillBotLoadPropertyValues();
-        chillBotGetPropertyValues.loadPropValues();
+    public static void main(String[] args) throws TelegramApiException, ClientException, InterruptedException, ApiException {
         TelegramController telegramController = new TelegramController();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(telegramController);
