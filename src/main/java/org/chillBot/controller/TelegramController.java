@@ -26,8 +26,20 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
     private Long chatId;
     private CommandHandler commandHandler;
 
+    private static String botUsername;
+
+    private static String botToken;
+
+    public static void setBotToken(String botToken) {
+        TelegramController.botToken = botToken;
+    }
+
     public void setChatId(Long chatId) {
         this.chatId = chatId;
+    }
+
+    public static void setBotUsername(String botUsername) {
+        TelegramController.botUsername = botUsername;
     }
 
     public TelegramController () {
@@ -96,12 +108,12 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     @Override
     public String getBotUsername() {
-        return "@FindChillPlaceBot";
+        return botUsername;
     }
 
     @Override
     public String getBotToken() {
-        return "2029119217:AAEyuWfxXOStemuHquNZFZ8vuQxIyFihHTE";
+        return botToken;
     }
 
     @Override

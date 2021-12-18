@@ -21,7 +21,7 @@ public class RateCommandTest {
         InMemoryPlaceDao placeDao = new InMemoryPlaceDao();
         BotFunction bot = new BotFunction(placeDao);
         bot.addPlace(place1);
-        assertEquals("Televisor (Radisheva, 4) Bar hasn't rated yet", bot.getPlacesPartly().get(0));
+        assertEquals("Televisor (Radisheva, 4) Bar hasn't rated yet", bot.getPlaces(1, 2).get(0));
     }
 
     /**
@@ -38,6 +38,6 @@ public class RateCommandTest {
         bot.addRate(place1);
         place1.setRate(5.0);
         bot.addRate(place1);
-        assertEquals("Televisor (Radisheva, 4) 4,50/5", bot.getPlacesPartly().get(0));
+        assertEquals("Televisor (Radisheva, 4) 4,50/5", bot.getPlaces(1, 2).get(0));
     }
 }

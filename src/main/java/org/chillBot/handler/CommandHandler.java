@@ -23,10 +23,19 @@ public class CommandHandler {
 
     private BotFunction bot;
 
-    private boolean isFirstOutput = true;
+    private boolean isContextSwitched = false;
+
+    private Integer startIdx = 1;
+
+    private Integer pageSize = 3;
 
     public CommandHandler() {
         bot = new BotFunction(new DBPlaceDao());
+    }
+
+    private void updateContext() {
+        isContextSwitched = true;
+        startIdx = 1;
     }
 
     /**
@@ -40,6 +49,7 @@ public class CommandHandler {
      */
     public void processInput(String message, Controller controller) throws TelegramApiException, ClientException, ApiException, SQLException {
         if (message.equals("/add") || currentCommand == Command.addBar) {
+            updateContext();
             if (message.equals("/add")) {
                 currentCommand = Command.addBar;
                 commandArgumentsHandler = new CommandArgumentsHandler(controller, 3, currentCommand);
@@ -60,25 +70,26 @@ public class CommandHandler {
             }
         }
         else if (message.equals("/bars")) {
-            List<String> bars = bot.getPlacesPartly();
-            if (bars.size() == 0 && isFirstOutput) {
+            List<String> bars = bot.getPlaces(startIdx, startIdx + pageSize);
+            if (bars.size() == 0 && isContextSwitched) {
                 controller.sendMessageToUser("No bars added yet");
             }
-            else if (bars.size() == 0) {
-                controller.sendMessageToUser("No more bars to show.");
-            }
             else {
-                if (isFirstOutput) {
+                if (isContextSwitched) {
                     controller.sendMessageToUser("List of bars:");
-                    isFirstOutput = false;
+                    isContextSwitched = false;
                 }
                 for (String bar : bars) {
                     controller.sendMessageToUser(bar);
                 }
-                controller.requestMoreBars();
+                if (bars.size() == pageSize) {
+                    controller.requestMoreBars();
+                }
+                startIdx += pageSize;
             }
         }
         else if (message.equals("/rate") || currentCommand == Command.rateBar){
+            updateContext();
             if (message.equals("/rate")) {
                 currentCommand = Command.rateBar;
                 commandArgumentsHandler = new CommandArgumentsHandler(controller, 4, currentCommand);

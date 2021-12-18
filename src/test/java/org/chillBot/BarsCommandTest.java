@@ -25,7 +25,7 @@ public class BarsCommandTest {
         BotFunction bot = new BotFunction(placeDao);
         bot.addPlace(place1);
         bot.addPlace(place2);
-        List<String> places = bot.getPlacesPartly();
+        List<String> places = bot.getPlaces(1, 3);
         assertEquals(2, places.size());
         assertEquals("Televisor (Radisheva, 4) Bar hasn't rated yet", places.get(0));
         assertEquals("Melodiya (Pervomayskaya, 36) Bar hasn't rated yet", places.get(1));

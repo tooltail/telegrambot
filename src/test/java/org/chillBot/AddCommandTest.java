@@ -23,8 +23,8 @@ public class AddCommandTest {
         BotFunction bot = new BotFunction(placeDao);
         boolean result = bot.addPlace(place);
         assertTrue(result);
-        assertEquals(1, placeDao.getAllPlaces().size());
-        assertEquals(place, placeDao.getAllPlaces().get(0));
+        assertEquals(1, placeDao.getPlaces(1, 2).size());
+        assertEquals(place, placeDao.getPlaces(1, 2).get(0));
     }
 
     /**

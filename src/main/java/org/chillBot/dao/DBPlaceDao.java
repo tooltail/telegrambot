@@ -12,21 +12,37 @@ import java.util.List;
 public class DBPlaceDao implements PlaceDao {
 
     /**
-     * Contains username postgresql database
-     */
-    private final String user = "postgres";
-
-    /**
      * Contains password postgresql database
      */
-    private final String password = "u_8h,B:vV+z[UzK";
+    private static String password;
 
     /**
      * Contains table
      */
-    private final String tableName = "placeTask2";
+    private static String tableName;
 
-    private Integer startIdx = 1;
+    /**
+     * Contains username postgresql database
+     */
+    private static String user;
+
+    private static String url;
+
+    public static void setUrl(String url) {
+        DBPlaceDao.url = url;
+    }
+
+    public static void setUser(String user) {
+        DBPlaceDao.user = user;
+    }
+
+    public static void setPassword(String password) {
+        DBPlaceDao.password = password;
+    }
+
+    public static void setTableName(String tableName) {
+        DBPlaceDao.tableName = tableName;
+    }
 
     /**
      * Gets connection to postgresql database
@@ -34,26 +50,17 @@ public class DBPlaceDao implements PlaceDao {
      * @throws SQLException
      */
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/telegrambot_schema", user, password);
+        return DriverManager.getConnection(url, user, password);
     }
 
     /**
-     * Gets list of bars from database
-     * @return list of bars
-     * @throws SQLException
-     */
-
-    public void updateStartIdx() {
-        startIdx = 1;
-    }
-
-    /**
-     * form places list by sqlQuery
-     * @param sqlQuery
+     * get 3 bars every time
      * @return
      * @throws SQLException
      */
-    private List<Place> formPlacesList(String sqlQuery) throws SQLException {
+    @Override
+    public List<Place> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
+        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id < %s;", tableName, startIdx, endIdx);
         List<Place> places = new LinkedList<>();
         Statement stmt = getConnection().createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
@@ -68,37 +75,21 @@ public class DBPlaceDao implements PlaceDao {
     }
 
     /**
-     * get 3 bars every time
-     * @return
-     * @throws SQLException
-     */
-    public List<Place> getPlacesPartly() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id <= %s;", tableName, startIdx, startIdx + 2);
-        startIdx += 3;
-        return formPlacesList(sqlQuery);
-    }
-
-    /**
-     * get all bars
-     * @return
-     * @throws SQLException
-     */
-    public List<Place> getAllPlaces() throws SQLException {
-        String sqlQuery = String.format("SELECT * FROM %s", tableName);
-        return formPlacesList(sqlQuery);
-    }
-
-    /**
      * Checks place in db
      * @param place place which checks in db
      * @return true if exists in db, false if not
      * @throws SQLException
      */
     private boolean checkPlaceInDB(Place place) throws SQLException {
-        List<Place> places = getAllPlaces();
-        for (Place pl: places) {
-            if (pl.equals(place))
-                return true;
+        String sqlQuery = String.format("SELECT * FROM %s WHERE type = '%s' AND name = '%s' AND address = '%s';",
+                tableName,
+                place.getType(),
+                place.getName(),
+                place.getAddress());
+        Statement stmt = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        if (rs.next()) {
+            return true;
         }
         return false;
     }
@@ -140,6 +131,7 @@ public class DBPlaceDao implements PlaceDao {
      * @return update was succesful - True, else - False
      * @throws SQLException
      */
+    @Override
     public boolean updateRate(Place place) throws SQLException {
         if(checkPlaceInDB(place)){
             String sqlQuery = String.format("SELECT count, rate FROM %s WHERE name = '%s' AND address = '%s';", tableName, place.getName(), place.getAddress());
