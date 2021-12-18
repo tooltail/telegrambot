@@ -1,5 +1,6 @@
 package org.chillBot.dao;
 
+import org.chillBot.Location;
 import org.chillBot.Place;
 
 import java.sql.*;
@@ -68,7 +69,8 @@ public class DBPlaceDao implements PlaceDao {
             Place place = new Place(rs.getString("type"),
                     rs.getString("name"),
                     rs.getString("address"),
-                    (rs.getInt("count") != 0 ? (double)rs.getInt("rate")/rs.getInt("count") : -1));
+                    (rs.getInt("count") != 0 ? (double)rs.getInt("rate")/rs.getInt("count") : -1),
+                    new Location(rs.getDouble("longitude"), rs.getDouble("latitude")));
             places.add(place);
         }
         return places;
@@ -113,11 +115,14 @@ public class DBPlaceDao implements PlaceDao {
         place.setType(convertToStringWithCapitalLetter(place.getType()));
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
+        Location placeLocation = new Location();
+        placeLocation.findPlaceLonLat(place);
+        place.setLocation(placeLocation);
         if (checkPlaceInDB(place))
             return false;
         else {
-            String sqlQuery = String.format("INSERT INTO %s (type, name, address, rate, count) VALUES('%s', '%s', '%s', '0', '0') ON CONFLICT DO NOTHING",
-                    tableName, place.getType(), place.getName(), place.getAddress());
+            String sqlQuery = String.format("INSERT INTO %s (type, name, address, rate, count, longitude, latitude) VALUES('%s', '%s', '%s', '0', '0', '%s', '%s') ON CONFLICT DO NOTHING",
+                    tableName, place.getType(), place.getName(), place.getAddress(), place.getLocation().getLongitude(), place.getLocation().getLatitude());
             Connection con = getConnection();
             Statement stmt = con.createStatement();
             stmt.executeUpdate(sqlQuery);

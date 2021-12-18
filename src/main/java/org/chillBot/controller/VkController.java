@@ -62,6 +62,8 @@ public class VkController implements Controller {
     public void requestMoreBars() {
 
     }
+    public void requestLocation() {
+    }
 
     public void startupController() throws ClientException, ApiException, InterruptedException {
         while (true) {

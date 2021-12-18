@@ -3,9 +3,11 @@ package org.chillBot.handler;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import org.chillBot.Command;
+import org.chillBot.Location;
 import org.chillBot.Place;
 import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 
 /**
  * Process command arguments
@@ -22,6 +24,8 @@ public class CommandArgumentsHandler {
 
     private Command currentCommand;
 
+    public CommandArgumentsHandler() {}
+
     public CommandArgumentsHandler(Controller controller, Integer countCommandArguments, Command currentCommand) {
         place = new Place();
         this.controller = controller;
@@ -36,6 +40,12 @@ public class CommandArgumentsHandler {
         if (countCommandArguments == currentCommandArgument)
             return true;
         return false;
+    }
+
+    public Location getLocation(String location) {
+        String[] coordinates = location.split(" ");
+        currentCommandArgument++;
+        return new Location(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
     }
 
     /**

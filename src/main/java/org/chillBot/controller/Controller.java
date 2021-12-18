@@ -8,4 +8,5 @@ public interface Controller {
     void sendMessageToUser(String text) throws ApiException, ClientException, TelegramApiException;
     void requestRate() throws TelegramApiException;
     void requestMoreBars() throws TelegramApiException;
+    void requestLocation() throws TelegramApiException;
 }
