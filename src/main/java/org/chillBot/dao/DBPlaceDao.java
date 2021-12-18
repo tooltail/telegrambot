@@ -29,6 +29,8 @@ public class DBPlaceDao implements PlaceDao {
 
     private static String url;
 
+    private static Connection connection;
+
     public static void setUrl(String url) {
         DBPlaceDao.url = url;
     }
@@ -45,18 +47,26 @@ public class DBPlaceDao implements PlaceDao {
         DBPlaceDao.tableName = tableName;
     }
 
+    public DBPlaceDao() {
+        try {
+            connection = DriverManager.getConnection(url, user, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Gets connection to postgresql database
      * @return connection to postgresql database
      * @throws SQLException
-     */
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
     }
+    */
 
     public Integer getNumberOfRows() throws SQLException {
         String sqlQuery = String.format("SELECT COUNT(*) FROM %s;", tableName);
-        Statement stmt = getConnection().createStatement();
+        Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
         rs.next();
         return rs.getInt("count");
@@ -71,7 +81,7 @@ public class DBPlaceDao implements PlaceDao {
     public List<Place> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
         String sqlQuery = String.format("SELECT * FROM %s WHERE id >= %s AND id < %s;", tableName, startIdx, endIdx);
         List<Place> places = new LinkedList<>();
-        Statement stmt = getConnection().createStatement();
+        Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
         while (rs.next()) {
             Place place = new Place(rs.getString("type"),
@@ -96,7 +106,7 @@ public class DBPlaceDao implements PlaceDao {
                 place.getType(),
                 place.getName(),
                 place.getAddress());
-        Statement stmt = getConnection().createStatement();
+        Statement stmt = connection.createStatement();
         ResultSet rs = stmt.executeQuery(sqlQuery);
         if (rs.next()) {
             return true;
@@ -131,8 +141,7 @@ public class DBPlaceDao implements PlaceDao {
         else {
             String sqlQuery = String.format("INSERT INTO %s (type, name, address, rate, count, longitude, latitude) VALUES('%s', '%s', '%s', '0', '0', '%s', '%s') ON CONFLICT DO NOTHING",
                     tableName, place.getType(), place.getName(), place.getAddress(), place.getLocation().getLongitude(), place.getLocation().getLatitude());
-            Connection con = getConnection();
-            Statement stmt = con.createStatement();
+            Statement stmt = connection.createStatement();
             stmt.executeUpdate(sqlQuery);
             return true;
         }
@@ -148,7 +157,7 @@ public class DBPlaceDao implements PlaceDao {
     public boolean updateRate(Place place) throws SQLException {
         if(checkPlaceInDB(place)){
             String sqlQuery = String.format("SELECT count, rate FROM %s WHERE name = '%s' AND address = '%s';", tableName, place.getName(), place.getAddress());
-            Statement stmt = getConnection().createStatement();
+            Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sqlQuery);
             rs.next();
             String sqlQuery1 = String.format("UPDATE %s\nSET rate = %s, count = %s\nWHERE type = '%s' AND name = '%s';",
