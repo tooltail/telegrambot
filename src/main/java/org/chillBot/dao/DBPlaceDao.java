@@ -54,6 +54,14 @@ public class DBPlaceDao implements PlaceDao {
         return DriverManager.getConnection(url, user, password);
     }
 
+    public Integer getNumberOfRows() throws SQLException {
+        String sqlQuery = String.format("SELECT COUNT(*) FROM %s;", tableName);
+        Statement stmt = getConnection().createStatement();
+        ResultSet rs = stmt.executeQuery(sqlQuery);
+        rs.next();
+        return rs.getInt("count");
+    }
+
     /**
      * get 3 bars every time
      * @return
@@ -116,7 +124,7 @@ public class DBPlaceDao implements PlaceDao {
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
         Location placeLocation = new Location();
-        placeLocation.findPlaceLonLat(place);
+        placeLocation.findPlaceLonLat(place.getAddress());
         place.setLocation(placeLocation);
         if (checkPlaceInDB(place))
             return false;

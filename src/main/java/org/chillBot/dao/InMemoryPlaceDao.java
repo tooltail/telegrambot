@@ -83,4 +83,9 @@ public class InMemoryPlaceDao implements PlaceDao {
         }
         return false;
     }
+
+    @Override
+    public Integer getNumberOfRows() {
+        return places.size();
+    }
 }

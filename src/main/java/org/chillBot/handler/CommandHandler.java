@@ -24,7 +24,7 @@ public class CommandHandler {
 
     private BotFunction bot;
 
-    private boolean isContextSwitched = false;
+    private boolean isContextSwitched = true; // ???
 
     private Integer startIdx = 1;
 
@@ -72,10 +72,11 @@ public class CommandHandler {
         }
         else if (message.equals("/bars")) {
             List<String> bars = bot.getPlaces(startIdx, startIdx + pageSize);
-            if (bars.size() == 0 && isContextSwitched) {
-                controller.sendMessageToUser("No bars added yet");
-            }
-            else {
+            if (bars.size() != 0 || !isContextSwitched) {
+                if (bars.size() == 0) {
+                    updateContext();
+                    bars = bot.getPlaces(startIdx, startIdx + pageSize);
+                }
                 if (isContextSwitched) {
                     controller.sendMessageToUser("List of bars:");
                     isContextSwitched = false;
@@ -87,6 +88,8 @@ public class CommandHandler {
                     controller.requestMoreBars();
                 }
                 startIdx += pageSize;
+            } else {
+                controller.sendMessageToUser("No bars added yet");
             }
         }
         else if (message.equals("/rate") || currentCommand == Command.rateBar){
@@ -113,7 +116,8 @@ public class CommandHandler {
         else if (message.equals("/search") || currentCommand == Command.location) {
             Location userLocation = null;
             if (message.equals("/search")) {
-                controller.requestLocation();
+                //controller.requestLocation();
+                controller.sendMessageToUser("Please share your geolocation or enter your current address");
                 currentCommand = Command.location;
                 commandArgumentsHandler = new CommandArgumentsHandler(controller, 1, currentCommand);
             }
@@ -123,7 +127,7 @@ public class CommandHandler {
             if (commandArgumentsHandler.isEnd()) {
                 List<String> bars = bot.getNearestPlace(userLocation);
                 if (bars.size() == 0) {
-                    controller.sendMessageToUser("No bars added yet");
+                    controller.sendMessageToUser("There are no bars near you");
                 } else {
                     controller.sendMessageToUser("Nearest bars:");
                     for (String bar : bars) {

@@ -43,9 +43,17 @@ public class CommandArgumentsHandler {
     }
 
     public Location getLocation(String location) {
-        String[] coordinates = location.split(" ");
+        Location coordinates;
+        if (Character.isLetter(location.charAt(0))) {
+            coordinates = new Location();
+            coordinates.findPlaceLonLat(location);
+        }
+        else {
+            coordinates = new Location(Double.parseDouble(location.split(" ")[0]),
+                                       Double.parseDouble(location.split(" ")[1]));
+        }
         currentCommandArgument++;
-        return new Location(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
+        return coordinates;
     }
 
     /**

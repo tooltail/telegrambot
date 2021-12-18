@@ -64,7 +64,7 @@ public class BotFunction implements IBotFunction {
 
 
     public List<String> getNearestPlace(Location userLocation) throws SQLException {
-        List<Place> places = placeDao.getPlaces(1, 5); //!!!!!!
+        List<Place> places = placeDao.getPlaces(1, placeDao.getNumberOfRows() + 1);
         List<String> formattedOutput = new LinkedList<>();
         Comparator<Place> comparator = new PlaceRateComparator();
         PriorityQueue<Place> queue = new PriorityQueue<>(10, comparator);

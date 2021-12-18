@@ -32,16 +32,8 @@ public class Location {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
     public Double getLatitude() {
         return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
     }
 
     public Double getDistanceFromLatLonInKm(Location userLocation) {
@@ -55,9 +47,9 @@ public class Location {
         return d;
     }
 
-    public void findPlaceLonLat(Place place) {
-        String address = String.format("г Екатеринбург, ул %s", place.getAddress());
-        Address addressInfo = client.cleanAddress(address);
+    public void findPlaceLonLat(String address) {
+        String query = String.format("г Екатеринбург, ул %s", address);
+        Address addressInfo = client.cleanAddress(query);
         this.longitude = addressInfo.getGeoLon();
         this.latitude = addressInfo.getGeoLat();
     }

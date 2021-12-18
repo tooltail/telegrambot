@@ -9,4 +9,5 @@ public interface PlaceDao {
     List<Place> getPlaces(Integer startIdx, Integer endIdx) throws SQLException;
     boolean addPlace(Place place) throws SQLException;
     boolean updateRate(Place place) throws SQLException;
+    Integer getNumberOfRows() throws SQLException;
 }
