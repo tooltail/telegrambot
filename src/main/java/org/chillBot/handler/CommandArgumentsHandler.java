@@ -49,8 +49,8 @@ public class CommandArgumentsHandler {
             coordinates.findPlaceLonLat(location);
         }
         else {
-            coordinates = new Location(Double.parseDouble(location.split(" ")[0]),
-                                       Double.parseDouble(location.split(" ")[1]));
+            coordinates = new Location(Double.parseDouble(location.split(" ")[1]),
+                                       Double.parseDouble(location.split(" ")[2]));
         }
         currentCommandArgument++;
         return coordinates;
