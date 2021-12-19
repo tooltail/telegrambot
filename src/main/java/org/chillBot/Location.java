@@ -4,6 +4,9 @@ import ru.redcom.lib.integration.api.client.dadata.DaDataClient;
 import ru.redcom.lib.integration.api.client.dadata.DaDataClientFactory;
 import ru.redcom.lib.integration.api.client.dadata.dto.Address;
 
+/**
+ *
+ */
 public class Location {
 
     private Double longitude;

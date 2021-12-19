@@ -10,6 +10,9 @@ import java.util.*;
  */
 public class BotFunction implements IBotFunction {
 
+    /**
+     * Creates variable for interaction with database
+     */
     private PlaceDao placeDao;
 
     public BotFunction(PlaceDao placeDao) {
@@ -61,6 +64,12 @@ public class BotFunction implements IBotFunction {
         return placeDao.updateRate(place);
     }
 
+    /**
+     * Returns List of nearest places in 2 km
+     * @param userLocation
+     * @return
+     * @throws SQLException
+     */
     public List<String> getNearestPlaces(Location userLocation) throws SQLException {
         List<Place> places = placeDao.getPlaces(1, placeDao.getNumberOfRows() + 1);
         List<String> formattedOutput = new LinkedList<>();

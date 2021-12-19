@@ -3,6 +3,9 @@ package org.chillBot;
 
 import java.util.Comparator;
 
+/**
+ * Class compares places by their rating (from highest to lowest rates)
+ */
 public class PlaceRateComparator implements Comparator<Place> {
 
     @Override

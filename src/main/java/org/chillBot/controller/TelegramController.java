@@ -100,6 +100,11 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
                 .build());
     }
 
+    /**
+     * Builds and sends message to user
+     * @param text
+     * @throws TelegramApiException
+     */
     public void sendMessageToUser(String text) throws TelegramApiException {
         execute(SendMessage.builder()
                 .chatId(chatId.toString())
@@ -117,6 +122,10 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         return botToken;
     }
 
+    /**
+     * Checks whether update was made by user (query of user)
+     * @param update
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {

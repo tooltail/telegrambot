@@ -8,6 +8,9 @@ import org.chillBot.dao.DBPlaceDao;
 import java.io.*;
 import java.util.Properties;
 
+/**
+ * Downloads necessary data from local file
+ */
 public class LocalVersionConfigLoader {
         InputStream inputStream;
 

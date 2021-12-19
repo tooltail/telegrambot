@@ -5,6 +5,9 @@ import org.chillBot.controller.TelegramController;
 import org.chillBot.controller.VkController;
 import org.chillBot.dao.DBPlaceDao;
 
+/**
+ * Downloads necessary data from heroku config
+ */
 public class DeployedVersionConfigLoader {
 
     public void loadEnvValues() {

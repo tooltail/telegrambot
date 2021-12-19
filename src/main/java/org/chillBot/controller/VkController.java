@@ -48,21 +48,41 @@ public class VkController implements Controller {
         commandHandler = new CommandHandler();
     }
 
+    /**
+     * Builds and sends message to user
+     * @param text
+     * @throws ApiException
+     * @throws ClientException
+     */
     @Override
     public void sendMessageToUser(String text) throws ApiException, ClientException {
         vk.messages().send(actor).message(text).userId(chatId).randomId(new Random().nextInt(10000)).execute();
     }
 
+    /**
+     * Send keyboard with rating buttons to user
+     * @throws TelegramApiException
+     */
     @Override
     public void requestRate() {
 
     }
 
+    /**
+     * Send button to show more bars
+     * @throws TelegramApiException
+     */
     @Override
     public void requestMoreBars() {
 
     }
 
+    /**
+     * Checks whether update was made by user (query of user)
+     * @throws ClientException
+     * @throws ApiException
+     * @throws InterruptedException
+     */
     public void startupController() throws ClientException, ApiException, InterruptedException {
         while (true) {
             MessagesGetLongPollHistoryQuery historyQuery = vk.messages().getLongPollHistory(actor).ts(ts);

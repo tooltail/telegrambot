@@ -27,8 +27,14 @@ public class DBPlaceDao implements PlaceDao {
      */
     private static String user;
 
+    /**
+     * Contains database's url
+     */
     private static String url;
 
+    /**
+     * Variable for getting connection
+     */
     private static Connection connection;
 
     public static void setUrl(String url) {
@@ -47,6 +53,9 @@ public class DBPlaceDao implements PlaceDao {
         DBPlaceDao.tableName = tableName;
     }
 
+    /**
+     * Connecting to database
+     */
     public DBPlaceDao() {
         try {
             connection = DriverManager.getConnection(url, user, password);
@@ -56,14 +65,10 @@ public class DBPlaceDao implements PlaceDao {
     }
 
     /**
-     * Gets connection to postgresql database
-     * @return connection to postgresql database
+     * Gets number of rows from database
+     * @return
      * @throws SQLException
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
-    }
-    */
-
+     */
     public Integer getNumberOfRows() throws SQLException {
         String sqlQuery = String.format("SELECT COUNT(*) FROM %s;", tableName);
         Statement stmt = connection.createStatement();

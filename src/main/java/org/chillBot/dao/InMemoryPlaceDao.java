@@ -16,6 +16,11 @@ public class InMemoryPlaceDao implements PlaceDao {
      */
     private Set<Place> places = new LinkedHashSet<>();
 
+    /**
+     * Variable that stores:
+     * Place as a key
+     * Value is Pair - summary rating and amount of people, who rated Place
+     */
     private Map<Place, Pair<Double, Double>> placePairDictionary = new HashMap<>();
 
     /**
@@ -27,6 +32,12 @@ public class InMemoryPlaceDao implements PlaceDao {
         return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
+    /**
+     * Gets all Places from List
+     * @param startIdx
+     * @param endIdx
+     * @return arrayList<Place>
+     */
     @Override
     public List<Place> getPlaces(Integer startIdx, Integer endIdx) {
         Integer currIdx = 1;
@@ -84,6 +95,10 @@ public class InMemoryPlaceDao implements PlaceDao {
         return false;
     }
 
+    /**
+     * Gets number of places stored in local database
+     * @return
+     */
     @Override
     public Integer getNumberOfRows() {
         return places.size();
