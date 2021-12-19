@@ -82,7 +82,7 @@ Nearest bars: <br />
 :large_blue_circle: **8)** Выбираем *Deploy Branch*
 ![](images/manualdeploy.png) <br /> <br />
 :green_circle: **9)** Переходим в Resources (1), нажимаем на карандашик (2), передвигаем ползунок (3)
-![](images/resources.png)      <br /> <br />
+![](images/resources.png)     <br /> <br />
 :red_circle: **10)** ~~Потратив пару часов в попытках разобраться с остальными ошибками деплоя~~, Вы наконец-то сделали это! Поздравляю! Ваш первый деплой!
 
 
