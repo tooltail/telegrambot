@@ -25,6 +25,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     private Long chatId;
     private CommandHandler commandHandler;
+    private Message message;
 
     private static String botUsername;
 
@@ -86,7 +87,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton moreButton = new InlineKeyboardButton();
         moreButton.setText("Show more");
-        moreButton.setCallbackData("/bars");
+        moreButton.setCallbackData("/moreBars");
         List<InlineKeyboardButton> keyboardButtonRow = new ArrayList<>();
         keyboardButtonRow.add(moreButton);
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
@@ -99,10 +100,15 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
                 .build());
     }
 
-    public void sendMessageToUser(String message) throws TelegramApiException {
+    /**
+     * Builds and sends message to user
+     * @param text
+     * @throws TelegramApiException
+     */
+    public void sendMessageToUser(String text) throws TelegramApiException {
         execute(SendMessage.builder()
                 .chatId(chatId.toString())
-                .text(message)
+                .text(text)
                 .build());
     }
 
@@ -116,14 +122,24 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         return botToken;
     }
 
+    /**
+     * Checks whether update was made by user (query of user)
+     * @param update
+     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
-            Message message = update.getMessage();
+            message = update.getMessage();
             try {
                 TelegramController telegramController = new TelegramController();
                 telegramController.setChatId(message.getChatId());
-                commandHandler.processInput(message.getText(), telegramController);
+                if (message.hasLocation()) {
+                    String msg = String.format("coordinates: %s %s", message.getLocation().getLongitude(), message.getLocation().getLatitude());
+                    commandHandler.processInput(msg, telegramController);
+                }
+                else {
+                    commandHandler.processInput(message.getText(), telegramController);
+                }
             } catch (ClientException | ApiException | SQLException | TelegramApiException e) {
                 e.printStackTrace();
             }

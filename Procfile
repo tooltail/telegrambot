@@ -1,1 +1,1 @@
-worker: java -jar target/telegrambot-jar-with-dependencies.jar
+worker: java -jar target/telegrambot-jar-with-dependencies.jar deploy

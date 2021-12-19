@@ -1,5 +1,6 @@
-package org.chillBot;
+package org.chillBot.Loader;
 
+import org.chillBot.Location;
 import org.chillBot.controller.TelegramController;
 import org.chillBot.controller.VkController;
 import org.chillBot.dao.DBPlaceDao;
@@ -7,7 +8,10 @@ import org.chillBot.dao.DBPlaceDao;
 import java.io.*;
 import java.util.Properties;
 
-public class ChillBotLoadPropertyValues {
+/**
+ * Downloads necessary data from local file
+ */
+public class LocalVersionConfigLoader {
         InputStream inputStream;
 
         public void loadPropValues() throws IOException {
@@ -29,6 +33,9 @@ public class ChillBotLoadPropertyValues {
                         DBPlaceDao.setUser(prop.getProperty("database.user"));
                         DBPlaceDao.setPassword(prop.getProperty("database.password"));
                         DBPlaceDao.setUrl(prop.getProperty("database.url"));
+                        Location.setApiKey(prop.getProperty("daData.ApiKey"));
+                        Location.setSecretKey(prop.getProperty("daData.SecretKey"));
+                        Location.setDataClient();
                 } catch (Exception e) {
                         throw e;
                 } finally {

@@ -3,23 +3,34 @@ package org.chillBot.handler;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import org.chillBot.Command;
+import org.chillBot.Location;
 import org.chillBot.Place;
 import org.chillBot.controller.Controller;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 
 /**
  * Process command arguments
  */
 public class CommandArgumentsHandler {
 
+    /**
+     * Number of arguments for function
+     */
     private Integer countCommandArguments;
 
+    /**
+     * Counter for amount of arguments
+     */
     private Integer currentCommandArgument = 0;
 
     private Place place;
 
     private Controller controller;
 
+    /**
+     * Sets one of the commands from enum Command
+     */
     private Command currentCommand;
 
     public CommandArgumentsHandler(Controller controller, Integer countCommandArguments, Command currentCommand) {
@@ -36,6 +47,25 @@ public class CommandArgumentsHandler {
         if (countCommandArguments == currentCommandArgument)
             return true;
         return false;
+    }
+
+    /**
+     * Get coordinates of the place
+     * @param location
+     * @return
+     */
+    public Location getLocation(String location) {
+        Location coordinates;
+        if (!location.contains("coordinates:")) {
+            coordinates = new Location();
+            coordinates.findPlaceLonLat(location);
+        }
+        else {
+            coordinates = new Location(Double.parseDouble(location.split(" ")[1]),
+                                       Double.parseDouble(location.split(" ")[2]));
+        }
+        currentCommandArgument++;
+        return coordinates;
     }
 
     /**
