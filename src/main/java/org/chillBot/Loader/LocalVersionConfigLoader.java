@@ -1,5 +1,6 @@
-package org.chillBot;
+package org.chillBot.Loader;
 
+import org.chillBot.Location;
 import org.chillBot.controller.TelegramController;
 import org.chillBot.controller.VkController;
 import org.chillBot.dao.DBPlaceDao;
@@ -7,7 +8,7 @@ import org.chillBot.dao.DBPlaceDao;
 import java.io.*;
 import java.util.Properties;
 
-public class ChillBotLoadPropertyValues {
+public class LocalVersionConfigLoader {
         InputStream inputStream;
 
         public void loadPropValues() throws IOException {
