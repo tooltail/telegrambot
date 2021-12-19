@@ -43,6 +43,11 @@ public class Location {
         return latitude;
     }
 
+    /**
+     * Counts distance between user and place
+     * @param userLocation
+     * @return
+     */
     public Double getDistanceFromLatLonInKm(Location userLocation) {
         Integer R = 6371;
         Double dLat = Math.toRadians(this.latitude- userLocation.latitude);
@@ -54,6 +59,10 @@ public class Location {
         return d;
     }
 
+    /**
+     * Finds place's longitude and latitude
+     * @param address
+     */
     public void findPlaceLonLat(String address) {
         String query = String.format("г Екатеринбург, ул %s", address);
         Address addressInfo = client.cleanAddress(query);

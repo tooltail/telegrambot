@@ -14,17 +14,24 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  */
 public class CommandArgumentsHandler {
 
+    /**
+     * Number of arguments for function
+     */
     private Integer countCommandArguments;
 
+    /**
+     * Counter for amount arguments
+     */
     private Integer currentCommandArgument = 0;
 
     private Place place;
 
     private Controller controller;
 
+    /**
+     * Sets one of the commands from enum Command
+     */
     private Command currentCommand;
-
-    public CommandArgumentsHandler() {}
 
     public CommandArgumentsHandler(Controller controller, Integer countCommandArguments, Command currentCommand) {
         place = new Place();
@@ -42,6 +49,11 @@ public class CommandArgumentsHandler {
         return false;
     }
 
+    /**
+     * Get coordinates of the place
+     * @param location
+     * @return
+     */
     public Location getLocation(String location) {
         Location coordinates;
         if (!location.contains("coordinates:")) {

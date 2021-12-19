@@ -24,7 +24,7 @@ public class CommandHandler {
 
     private BotFunction bot;
 
-    private boolean isContextSwitched = true; // ???
+    private boolean isContextSwitched = true;
 
     private Integer startIdx = 1;
 
