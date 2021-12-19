@@ -18,6 +18,9 @@ import java.util.List;
  */
 public class CommandHandler {
 
+    /**
+     * Counter for amount of arguments
+     */
     private Command currentCommand;
 
     private CommandArgumentsHandler commandArgumentsHandler;
@@ -71,7 +74,7 @@ public class CommandHandler {
             }
         }
         else if (message.equals("/bars") || message.equals("/moreBars")) {
-            List<String> bars = bot.getPlaces(startIdx, startIdx    + pageSize);
+            List<String> bars = bot.getPlaces(startIdx, startIdx + pageSize);
             if (bars.size() != 0 || !isContextSwitched) {
                 if (message.equals("/moreBars") && bars.size() == 0) {
                     controller.sendMessageToUser("No more bars");

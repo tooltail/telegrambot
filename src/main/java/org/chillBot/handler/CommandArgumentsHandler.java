@@ -20,7 +20,7 @@ public class CommandArgumentsHandler {
     private Integer countCommandArguments;
 
     /**
-     * Counter for amount arguments
+     * Counter for amount of arguments
      */
     private Integer currentCommandArgument = 0;
 

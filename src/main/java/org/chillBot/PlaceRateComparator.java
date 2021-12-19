@@ -8,6 +8,12 @@ import java.util.Comparator;
  */
 public class PlaceRateComparator implements Comparator<Place> {
 
+    /**
+     * Compares places and sorts them in decreasing order
+     * @param o1
+     * @param o2
+     * @return
+     */
     @Override
     public int compare(Place o1, Place o2) {
         if (o1.getRate() > o2.getRate()) {

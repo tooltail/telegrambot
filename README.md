@@ -1,29 +1,29 @@
 # №1 
 :shipit: \
-Задача - создать БД(postgresql), где будут храниться название и адрес баров
+Задача - создать БД (postgresql), где будут храниться название и адрес баров
 + возможность добавлять новые бары (т.к. используется БД - она может быть изменена - добавлены новые места, удалены старые и т.д.)
 + выводить список уже добавленных баров
 
 Пример диалога:
 
 >**/add** \
-    Выберите категорию, в которую Вы хотите добавить заведение: \
+Select the category to which you want to add the establishment: \
         *Bar* \
-    Укажите название заведения: \
+Enter the name of the establishment: \
         *Televisor* \
-    Укажите адрес заведения: \
+Enter the address of the establishment: \
         *Radisheva, 4*
 
 >**/add** <br />
-Выберите категорию, в которую Вы хотите добавить заведение: <br />
+Select the category to which you want to add the establishment: <br />
     Bar <br />
-    Укажите название заведения: <br />
+Enter the name of the establishment: <br />
         *Melodiya* <br />
-    Укажите адрес заведения: <br />
+Enter the address of the establishment: <br />
         *Pervomayskaya, 36*
 
 >**/bars** <br />
-    Список баров: <br />
+List of bars: <br />
         Televisor (Radisheva, 4) <br />
         Melodiya (Pervomayskaya, 36)
 
@@ -39,7 +39,7 @@
     Enter the name of the establishment: <br /> 
         *Televisor* <br />
     Enter the address of the establishment: <br />
-        *Radisheva,4* <br />
+        *Radisheva, 4* <br />
     Rate the establishment (between 1 and 5): <br />
         *100* <br />
     The rate must be between 1 and 5 <br />

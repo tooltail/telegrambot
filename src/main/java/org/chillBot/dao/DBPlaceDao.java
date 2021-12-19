@@ -78,7 +78,7 @@ public class DBPlaceDao implements PlaceDao {
     }
 
     /**
-     * get 3 bars every time
+     * get 3 (or another number) bars every time
      * @return
      * @throws SQLException
      */

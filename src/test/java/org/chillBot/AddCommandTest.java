@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class AddCommandTest {
 
     /**
-     * Checks if added to db
+     * Checks if place was added to db
      * @throws SQLException
      */
     @Test

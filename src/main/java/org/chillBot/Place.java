@@ -78,6 +78,10 @@ public class Place {
         return Objects.equals(type, place.type) && Objects.equals(name, place.name) && Objects.equals(address, place.address);
     }
 
+    /**
+     * Generates a hash code for variables
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(type, name, address);

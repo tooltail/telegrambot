@@ -43,7 +43,7 @@ public class InMemoryPlaceDao implements PlaceDao {
         Integer currIdx = 1;
         List<Place> arrayList = new ArrayList<>();
         for (Place place : places) {
-            if (currIdx >= startIdx && currIdx <= startIdx + 2) {
+            if (currIdx >= startIdx && currIdx <= endIdx) {
                 if (placePairDictionary.containsKey(place) && placePairDictionary.get(place).getValue() != 0) {
                     place.setRate(placePairDictionary.get(place).getKey() / placePairDictionary.get(place).getValue());
                 }
