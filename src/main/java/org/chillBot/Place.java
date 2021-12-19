@@ -84,6 +84,13 @@ public class Place {
         this.address = address;
     }
 
+    public Place(String type, String name, String address, Location location) {
+        this.type = type;
+        this.name = name;
+        this.address = address;
+        this.location = location;
+    }
+
     public Place(String type, String name, String address, Double rate, Location location) {
         this.type = type;
         this.name = name;

@@ -70,10 +70,13 @@ public class CommandHandler {
                 currentCommand = null;
             }
         }
-        else if (message.equals("/bars")) {
-            List<String> bars = bot.getPlaces(startIdx, startIdx + pageSize);
+        else if (message.equals("/bars") || message.equals("/moreBars")) {
+            List<String> bars = bot.getPlaces(startIdx, startIdx    + pageSize);
             if (bars.size() != 0 || !isContextSwitched) {
-                if (bars.size() == 0) {
+                if (message.equals("/moreBars") && bars.size() == 0) {
+                    controller.sendMessageToUser("No more bars");
+                }
+                else if (bars.size() == 0) {
                     updateContext();
                     bars = bot.getPlaces(startIdx, startIdx + pageSize);
                 }
@@ -113,10 +116,9 @@ public class CommandHandler {
                 currentCommand = null;
             }
         }
-        else if (message.equals("/search") || currentCommand == Command.location) {
+        else if (message.equals("/nearestBars") || currentCommand == Command.location) {
             Location userLocation = null;
-            if (message.equals("/search")) {
-                //controller.requestLocation();
+            if (message.equals("/nearestBars")) {
                 controller.sendMessageToUser("Please share your geolocation or enter your current address");
                 currentCommand = Command.location;
                 commandArgumentsHandler = new CommandArgumentsHandler(controller, 1, currentCommand);
@@ -125,7 +127,7 @@ public class CommandHandler {
                 userLocation = commandArgumentsHandler.getLocation(message);
             }
             if (commandArgumentsHandler.isEnd()) {
-                List<String> bars = bot.getNearestPlace(userLocation);
+                List<String> bars = bot.getNearestPlaces(userLocation);
                 if (bars.size() == 0) {
                     controller.sendMessageToUser("There are no bars near you");
                 } else {

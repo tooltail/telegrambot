@@ -10,9 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.sql.SQLException;
@@ -90,7 +87,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton moreButton = new InlineKeyboardButton();
         moreButton.setText("Show more");
-        moreButton.setCallbackData("/bars");
+        moreButton.setCallbackData("/moreBars");
         List<InlineKeyboardButton> keyboardButtonRow = new ArrayList<>();
         keyboardButtonRow.add(moreButton);
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
@@ -107,23 +104,6 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         execute(SendMessage.builder()
                 .chatId(chatId.toString())
                 .text(text)
-                .build());
-    }
-
-    public void requestLocation() throws TelegramApiException {
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        KeyboardButton keyboardButton = new KeyboardButton();
-        keyboardButton.setRequestLocation(true);
-        keyboardButton.setText("Share location");
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(keyboardButton);
-        keyboard.add(row);
-        keyboardMarkup.setKeyboard(keyboard);
-        execute(SendMessage.builder()
-                .chatId(chatId.toString())
-                .text("Share your location, pls :)")
-                .replyMarkup(keyboardMarkup)
                 .build());
     }
 
@@ -145,7 +125,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
                 TelegramController telegramController = new TelegramController();
                 telegramController.setChatId(message.getChatId());
                 if (message.hasLocation()) {
-                    String msg = String.format("%s %s", message.getLocation().getLongitude(), message.getLocation().getLatitude());
+                    String msg = String.format("coordinates: %s %s", message.getLocation().getLongitude(), message.getLocation().getLatitude());
                     commandHandler.processInput(msg, telegramController);
                 }
                 else {

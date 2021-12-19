@@ -61,9 +61,7 @@ public class BotFunction implements IBotFunction {
         return placeDao.updateRate(place);
     }
 
-
-
-    public List<String> getNearestPlace(Location userLocation) throws SQLException {
+    public List<String> getNearestPlaces(Location userLocation) throws SQLException {
         List<Place> places = placeDao.getPlaces(1, placeDao.getNumberOfRows() + 1);
         List<String> formattedOutput = new LinkedList<>();
         Comparator<Place> comparator = new PlaceRateComparator();
@@ -71,17 +69,26 @@ public class BotFunction implements IBotFunction {
         for (Place place : places) {
             Location location = place.getLocation();
             Double distance = location.getDistanceFromLatLonInKm(userLocation);
-            if (distance <= 2 && place.getRate() != -1) {
+            if (distance <= 2) {
                 queue.add(place);
             }
         }
         while (queue.size() != 0) {
             Place place = queue.remove();
-            String result = String.format("%s (%s)\nrate: %s/5\ndistance: %s km",
-                    place.getName(),
-                    place.getAddress(),
-                    String.format(Locale.GERMANY, "%.2f", place.getRate()),
-                    String.format(Locale.GERMANY, "%.2f", place.getLocation().getDistanceFromLatLonInKm(userLocation)));
+            String result;
+            if (place.getRate() == -1) {
+                result = String.format("%s (%s)\nnot rated\ndistance: %s km",
+                        place.getName(),
+                        place.getAddress(),
+                        String.format(Locale.GERMANY, "%.2f", place.getLocation().getDistanceFromLatLonInKm(userLocation)));
+            }
+            else {
+                result = String.format("%s (%s)\nrate: %s/5\ndistance: %s km",
+                        place.getName(),
+                        place.getAddress(),
+                        String.format(Locale.GERMANY, "%.2f", place.getRate()),
+                        String.format(Locale.GERMANY, "%.2f", place.getLocation().getDistanceFromLatLonInKm(userLocation)));
+            }
             formattedOutput.add(result);
         }
         return formattedOutput;

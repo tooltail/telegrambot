@@ -44,7 +44,7 @@ public class CommandArgumentsHandler {
 
     public Location getLocation(String location) {
         Location coordinates;
-        if (Character.isLetter(location.charAt(0))) {
+        if (!location.contains("coordinates:")) {
             coordinates = new Location();
             coordinates.findPlaceLonLat(location);
         }

@@ -31,6 +31,7 @@ public class ChillBotLoadPropertyValues {
                         DBPlaceDao.setUrl(prop.getProperty("database.url"));
                         Location.setApiKey(prop.getProperty("daData.ApiKey"));
                         Location.setSecretKey(prop.getProperty("daData.SecretKey"));
+                        Location.setDataClient();
                 } catch (Exception e) {
                         throw e;
                 } finally {

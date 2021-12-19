@@ -11,7 +11,7 @@ public class Location {
 
     private static String API_KEY;
     private static String SECRET_KEY;
-    private final DaDataClient client = DaDataClientFactory.getInstance(API_KEY, SECRET_KEY);
+    private static DaDataClient client;
 
     public Location(Double longitude, Double latitude) {
         this.longitude = longitude;
@@ -26,6 +26,10 @@ public class Location {
 
     public static void setSecretKey(String secretKey) {
         SECRET_KEY = secretKey;
+    }
+
+    public static void setDataClient() {
+        client = DaDataClientFactory.getInstance(API_KEY, SECRET_KEY);
     }
 
     public Double getLongitude() {
