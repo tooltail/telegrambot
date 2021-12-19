@@ -66,22 +66,22 @@ Please share your geolocation or enter your current address <br />
 Nearest bars: <br />
 *There are no bars near you*
 ## Деплой бота на Heroku <br /> <br />
-**1)** Регистрируемся на Heroku.com
+:white_circle:**1)** Регистрируемся на Heroku.com
 ![](images/img.png) <br /> <br />
-**2)** Создаем новое приложение 
+:large_blue_circle: **2)** Создаем новое приложение 
 ![](images/createapp.png) <br /> <br />
-**3)** Переходим во вкладку Settings ![](images/settings.png) <br /> <br />
-**4)** Указываем необходимые переменные, которые используются непосредственно в коде
+:red_circle: **3)** Переходим во вкладку Settings ![](images/settings.png) <br /> <br />
+:white_circle: **4)** Указываем необходимые переменные, которые используются непосредственно в коде
 ![](images/конфиг.png)<br /> <br />
-**5)** Переходим во вкладку Deploy 
+:large_blue_circle: **5)** Переходим во вкладку Deploy 
 ![](images/deploy.png) <br /> <br />
-**6)** С помощью GitHub привязываем наш аккаунт к Heroku
+:red_circle: **6)** С помощью GitHub привязываем наш аккаунт к Heroku
 ![](images/git.png) <br /> <br />
-**7)** Находим необходимый для деплоя проект (telegrambot в нашем случае) и нажимаем *Connect*
+:white_circle: **7)** Находим необходимый для деплоя проект (telegrambot в нашем случае) и нажимаем *Connect*
 ![](images/project.png) <br /> <br />
-**8)** Выбираем *Deploy Branch*
+:large_blue_circle: **8)** Выбираем *Deploy Branch*
 ![](images/manualdeploy.png) <br /> <br />
-**9)** ~~Потратив пару часов в попытках разобраться с остальными ошибками деплоя~~, Вы наконец-то сделали это! Поздравляю! Ваш первый деплой!
+:red_circle: **9)** ~~Потратив пару часов в попытках разобраться с остальными ошибками деплоя~~, Вы наконец-то сделали это! Поздравляю! Ваш первый деплой!
 
 
 
