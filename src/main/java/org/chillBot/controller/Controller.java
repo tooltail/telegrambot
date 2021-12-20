@@ -28,5 +28,5 @@ public interface Controller {
      * Send button to show more bars
      * @throws TelegramApiException
      */
-    void requestMoreBars() throws TelegramApiException;
+    void requestMoreBars() throws TelegramApiException, ClientException, ApiException;
 }

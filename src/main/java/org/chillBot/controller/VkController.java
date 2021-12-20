@@ -1,8 +1,6 @@
 package org.chillBot.controller;
 
-import api.longpoll.bots.model.events.messages.MessageEvent;
 import api.longpoll.bots.model.events.messages.MessageNew;
-import api.longpoll.bots.model.events.other.AppPayload;
 import api.longpoll.bots.model.objects.basic.Message;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
@@ -15,7 +13,6 @@ import com.vk.api.sdk.objects.messages.KeyboardButton;
 import com.vk.api.sdk.objects.messages.KeyboardButtonAction;
 import com.vk.api.sdk.objects.messages.TemplateActionTypeNames;
 import org.chillBot.handler.CommandHandler;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import api.longpoll.bots.LongPollBot;
 
@@ -91,7 +88,6 @@ public class VkController extends LongPollBot implements Controller {
         vk.messages().send(actor).message(text).peerId(Math.toIntExact(chatId)).randomId(new Random().nextInt(10000)).execute();
     }
 
-
     private List<KeyboardButton> addRateButtonsToRow() {
         List<KeyboardButton> keyboardButtonsRow = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
@@ -110,11 +106,10 @@ public class VkController extends LongPollBot implements Controller {
     @Override
     public void requestRate() throws ClientException, ApiException {
         List<List<KeyboardButton>> buttons = new ArrayList<>();
-        Keyboard keyboard = new Keyboard().setOneTime(true);
-        keyboard.setInline(true).setButtons(buttons);
+        Keyboard keyboard = new Keyboard().setInline(true);
         List<KeyboardButton> keyboardButtonsRow = addRateButtonsToRow();
-        List<List<KeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
+        buttons.add(keyboardButtonsRow);
+        keyboard.setButtons(buttons);
         vk.messages().send(actor).message("Rate the establishment").peerId(Math.toIntExact(chatId)).randomId(new Random().nextInt(10000)).keyboard(keyboard).execute();
     }
 
@@ -123,9 +118,14 @@ public class VkController extends LongPollBot implements Controller {
      * @throws TelegramApiException
      */
     @Override
-    public void requestMoreBars() {
-
+    public void requestMoreBars() throws ClientException, ApiException {
+        List<List<KeyboardButton>> buttons = new ArrayList<>();
+        List<KeyboardButton> keyboardButtonsRow = new ArrayList<>();
+        Keyboard keyboard = new Keyboard().setInline(true);
+        KeyboardButtonAction action = new KeyboardButtonAction();
+        keyboardButtonsRow.add(new KeyboardButton().setAction(action.setLabel("/moreBars").setType(TemplateActionTypeNames.TEXT)));
+        buttons.add(keyboardButtonsRow);
+        keyboard.setButtons(buttons);
+        vk.messages().send(actor).message("Show more bars").peerId(Math.toIntExact(chatId)).randomId(new Random().nextInt(10000)).keyboard(keyboard).execute();
     }
-
-
 }
