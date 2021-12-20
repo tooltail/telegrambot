@@ -14,7 +14,6 @@ public class AddCommandTest {
 
     /**
      * Checks if place was added to db
-     * @throws SQLException
      */
     @Test
     public void testAddPlace() throws SQLException {
@@ -29,7 +28,6 @@ public class AddCommandTest {
 
     /**
      * Checks if added same places
-     * @throws SQLException
      */
     @Test
     public void testAddSamePlaces() throws SQLException {
@@ -40,5 +38,6 @@ public class AddCommandTest {
         assertTrue(result);
         result = bot.addPlace(place);
         assertFalse(result);
+        assertEquals(1, placeDao.getPlaces(1, 3).size());
     }
 }
