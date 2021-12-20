@@ -1,5 +1,6 @@
 package org.chillBot;
 
+import api.longpoll.bots.exceptions.VkApiException;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import org.chillBot.Loader.DeployedVersionConfigLoader;
@@ -16,7 +17,7 @@ import java.io.IOException;
  * Entry point
  */
 public class Main {
-    public static void main(String[] args) throws TelegramApiException, ClientException, InterruptedException, ApiException, IOException {
+    public static void main(String[] args) throws TelegramApiException, ClientException, InterruptedException, ApiException, IOException, VkApiException {
         if (args.length != 0 && args[0].equals("deploy")) {
             DeployedVersionConfigLoader configLoader = new DeployedVersionConfigLoader();
             configLoader.loadEnvValues();
@@ -28,7 +29,6 @@ public class Main {
         TelegramController telegramController = new TelegramController();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(telegramController);
-        VkController vkController = new VkController();
-        vkController.startupController();
+        new VkController().startPolling();
     }
 }

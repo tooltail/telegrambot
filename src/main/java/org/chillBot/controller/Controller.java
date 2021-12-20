@@ -22,7 +22,7 @@ public interface Controller {
      * Send keyboard with rating buttons to user
      * @throws TelegramApiException
      */
-    void requestRate() throws TelegramApiException;
+    void requestRate() throws TelegramApiException, ClientException, ApiException;
 
     /**
      * Send button to show more bars

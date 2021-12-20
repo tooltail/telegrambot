@@ -44,24 +44,20 @@ public class Location {
     }
 
     /**
-     * Counts distance between user and place
-     * @param userLocation
-     * @return
+     * Counts distance between user and place in kilometres
      */
     public Double getDistanceFromLatLonInKm(Location userLocation) {
-        Integer R = 6371;
-        Double dLat = Math.toRadians(this.latitude- userLocation.latitude);
-        Double dLon = Math.toRadians(this.longitude- userLocation.longitude);
-        Double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Integer radiusOfTheEarth = 6371;
+        Double dLat = Math.toRadians(this.latitude - userLocation.latitude);
+        Double dLon = Math.toRadians(this.longitude - userLocation.longitude);
+        Double temp = Math.sin(dLat/2) * Math.sin(dLat/2) +
                    Math.cos(Math.toRadians(userLocation.latitude)) * Math.cos(Math.toRadians(this.latitude)) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        Double d = R * c; // Distance in km
-        return d;
+        Double distanceInKm = radiusOfTheEarth * 2 * Math.atan2(Math.sqrt(temp), Math.sqrt(1-temp));
+        return distanceInKm;
     }
 
     /**
      * Finds place's longitude and latitude
-     * @param address
      */
     public void findPlaceLonLat(String address) {
         String query = String.format("г Екатеринбург, ул %s", address);

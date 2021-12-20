@@ -51,8 +51,6 @@ public class CommandArgumentsHandler {
 
     /**
      * Get coordinates of the place
-     * @param location
-     * @return
      */
     public Location getLocation(String location) {
         Location coordinates;
@@ -70,10 +68,6 @@ public class CommandArgumentsHandler {
 
     /**
      * Forms class Place by adding all inputted arguments
-     * @param argument
-     * @throws TelegramApiException
-     * @throws ClientException
-     * @throws ApiException
      */
     public void addArgument(String argument) throws TelegramApiException, ClientException, ApiException {
         if (currentCommandArgument == 0) {
