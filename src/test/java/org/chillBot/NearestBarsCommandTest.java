@@ -27,9 +27,11 @@ public class NearestBarsCommandTest {
         Place place1 = new Place("Bar", "Televisor", "Radisheva, 4", new Location(60.5997217, 56.830884));
         Place place2 = new Place("Bar", "Strelka Bar", "8 Marta, 18", new Location(60.6000732, 56.8322869));
         Place place3 = new Place("Bar", "The out bar", "8 Marta, 31", new Location(60.6009807, 56.8317491));
+        Place place4 = new Place("Bar", "Shelest", "Tkachey, 17", new Location(60.633012, 56.816306));
         botFunction.addPlace(place1);
         botFunction.addPlace(place2);
         botFunction.addPlace(place3);
+        botFunction.addPlace(place4);
         place1.setRate(3.0);
         place3.setRate(4.0);
         botFunction.addRate(place1);
