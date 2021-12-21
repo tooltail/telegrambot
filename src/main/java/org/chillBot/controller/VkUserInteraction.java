@@ -24,7 +24,7 @@ import java.util.Random;
 /**
  * Interaction with user in Vkontakte
  */
-public class VkController extends LongPollBot implements Controller {
+public class VkUserInteraction extends LongPollBot implements Interaction {
 
     private VkApiClient vk;
     private GroupActor actor;
@@ -35,18 +35,18 @@ public class VkController extends LongPollBot implements Controller {
     private Message message;
 
     public static void setGroupId(Integer groupId) {
-        VkController.groupId = groupId;
+        VkUserInteraction.groupId = groupId;
     }
 
     public static void setBotToken(String botToken) {
-        VkController.botToken = botToken;
+        VkUserInteraction.botToken = botToken;
     }
 
     public void setChatId(Integer chatId) {
         this.chatId = chatId;
     }
 
-    public VkController() throws ClientException, ApiException {
+    public VkUserInteraction() throws ClientException, ApiException {
         TransportClient transportClient = new HttpTransportClient();
         vk = new VkApiClient(transportClient);
         actor = new GroupActor(groupId, botToken);
@@ -71,9 +71,9 @@ public class VkController extends LongPollBot implements Controller {
         message = messageNew.getMessage();
         if (message.hasText()){
             try {
-                VkController vkController = new VkController();
-                vkController.setChatId(message.getFromId());
-                commandHandler.processInput(message.getText(), vkController);
+                VkUserInteraction userInteraction = new VkUserInteraction();
+                userInteraction.setChatId(message.getFromId());
+                commandHandler.processInput(message.getText(), userInteraction);
             } catch (TelegramApiException | SQLException | ApiException | ClientException e) {
                 e.printStackTrace();
             }
@@ -101,7 +101,6 @@ public class VkController extends LongPollBot implements Controller {
 
     /**
      * Send keyboard with rating buttons to user
-     * @throws TelegramApiException
      */
     @Override
     public void requestRate() throws ClientException, ApiException {
@@ -115,7 +114,6 @@ public class VkController extends LongPollBot implements Controller {
 
     /**
      * Send button to show more bars
-     * @throws TelegramApiException
      */
     @Override
     public void requestMoreBars() throws ClientException, ApiException {

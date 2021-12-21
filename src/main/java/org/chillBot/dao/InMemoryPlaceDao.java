@@ -3,7 +3,6 @@ package org.chillBot.dao;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.chillBot.Place;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -36,7 +35,6 @@ public class InMemoryPlaceDao implements PlaceDao {
      * Gets all Places from List
      * @param startIdx
      * @param endIdx
-     * @return arrayList<Place>
      */
     @Override
     public List<Place> getPlaces(Integer startIdx, Integer endIdx) {
@@ -80,7 +78,6 @@ public class InMemoryPlaceDao implements PlaceDao {
      * Updates rating of the place in memory
      * @param place
      * @return True if rating was added, else False
-     * @throws SQLException
      */
     @Override
     public boolean updateRate(Place place) {
@@ -97,7 +94,6 @@ public class InMemoryPlaceDao implements PlaceDao {
 
     /**
      * Gets number of places stored in local database
-     * @return
      */
     @Override
     public Integer getNumberOfRows() {

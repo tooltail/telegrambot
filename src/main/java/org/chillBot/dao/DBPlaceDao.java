@@ -2,6 +2,7 @@ package org.chillBot.dao;
 
 import org.chillBot.Location;
 import org.chillBot.Place;
+import org.chillBot.AddressLonLatFinder;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -66,8 +67,6 @@ public class DBPlaceDao implements PlaceDao {
 
     /**
      * Gets number of rows from database
-     * @return
-     * @throws SQLException
      */
     public Integer getNumberOfRows() throws SQLException {
         String sqlQuery = String.format("SELECT COUNT(*) FROM %s;", tableName);
@@ -79,8 +78,6 @@ public class DBPlaceDao implements PlaceDao {
 
     /**
      * get 3 (or another number) bars every time
-     * @return
-     * @throws SQLException
      */
     @Override
     public List<Place> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
@@ -103,7 +100,6 @@ public class DBPlaceDao implements PlaceDao {
      * Checks place in db
      * @param place place which checks in db
      * @return true if exists in db, false if not
-     * @throws SQLException
      */
     private boolean checkPlaceInDB(Place place) throws SQLException {
         String sqlQuery = String.format("SELECT * FROM %s WHERE type = '%s' AND name = '%s' AND address = '%s';",
@@ -131,15 +127,14 @@ public class DBPlaceDao implements PlaceDao {
     /**
      * Adds the establishment to the database
      * @param place place which adds
-     * @throws SQLException
      */
     @Override
     public boolean addPlace(Place place) throws SQLException {
         place.setType(convertToStringWithCapitalLetter(place.getType()));
         place.setName(convertToStringWithCapitalLetter(place.getName()));
         place.setAddress(convertToStringWithCapitalLetter(place.getAddress()));
-        Location placeLocation = new Location();
-        placeLocation.findPlaceLonLat(place.getAddress());
+        AddressLonLatFinder lonLatFinder = new AddressLonLatFinder();
+        Location placeLocation = lonLatFinder.getAddressLonLat(place.getAddress());
         place.setLocation(placeLocation);
         if (checkPlaceInDB(place))
             return false;
@@ -156,7 +151,6 @@ public class DBPlaceDao implements PlaceDao {
      * Updates rating in database
      * @param place
      * @return update was succesful - True, else - False
-     * @throws SQLException
      */
     @Override
     public boolean updateRate(Place place) throws SQLException {

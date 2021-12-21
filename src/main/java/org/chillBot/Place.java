@@ -66,9 +66,7 @@ public class Place {
     private Location location;
 
     /**
-     * Overrided method for comparing places using their name, address and type
-     * @param o
-     * @return
+     * Override method for comparing places using their name, address and type
      */
     @Override
     public boolean equals(Object o) {
@@ -80,7 +78,6 @@ public class Place {
 
     /**
      * Generates a hash code for variables
-     * @return
      */
     @Override
     public int hashCode() {

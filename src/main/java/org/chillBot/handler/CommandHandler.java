@@ -6,7 +6,7 @@ import org.chillBot.BotFunction;
 import org.chillBot.Command;
 import org.chillBot.Location;
 import org.chillBot.Place;
-import org.chillBot.controller.Controller;
+import org.chillBot.controller.Interaction;
 import org.chillBot.dao.DBPlaceDao;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -25,7 +25,7 @@ public class CommandHandler {
 
     private CommandArgumentsHandler commandArgumentsHandler;
 
-    private BotFunction bot;
+    private BotFunction botFunction;
 
     private boolean isContextSwitched = true;
 
@@ -34,7 +34,7 @@ public class CommandHandler {
     private Integer pageSize = 3;
 
     public CommandHandler() {
-        bot = new BotFunction(new DBPlaceDao());
+        botFunction = new BotFunction(new DBPlaceDao());
     }
 
     private void updateContext() {
@@ -44,14 +44,8 @@ public class CommandHandler {
 
     /**
      * Handles the commands inputted by user
-     * @param message
-     * @param controller
-     * @throws TelegramApiException
-     * @throws ClientException
-     * @throws ApiException
-     * @throws SQLException
      */
-    public void processInput(String message, Controller controller) throws TelegramApiException, ClientException, ApiException, SQLException {
+    public void processInput(String message, Interaction controller) throws TelegramApiException, ClientException, ApiException, SQLException {
         if (message.equals("/add") || currentCommand == Command.addBar) {
             updateContext();
             if (message.equals("/add")) {
@@ -64,7 +58,7 @@ public class CommandHandler {
             }
             if (commandArgumentsHandler.isEnd()) {
                 Place place = commandArgumentsHandler.getPlace();
-                if (bot.addPlace(place)) {
+                if (botFunction.addPlace(place)) {
                     controller.sendMessageToUser("Bar added to database\nYou can check list of bars. Type /bars");
                 }
                 else {
@@ -74,14 +68,14 @@ public class CommandHandler {
             }
         }
         else if (message.equals("/bars") || message.equals("/moreBars")) {
-            List<String> bars = bot.getPlaces(startIdx, startIdx + pageSize);
+            List<String> bars = botFunction.getPlaces(startIdx, startIdx + pageSize);
             if (bars.size() != 0 || !isContextSwitched) {
                 if (message.equals("/moreBars") && bars.size() == 0) {
                     controller.sendMessageToUser("No more bars");
                 }
                 else if (bars.size() == 0) {
                     updateContext();
-                    bars = bot.getPlaces(startIdx, startIdx + pageSize);
+                    bars = botFunction.getPlaces(startIdx, startIdx + pageSize);
                 }
                 if (isContextSwitched) {
                     controller.sendMessageToUser("List of bars:");
@@ -110,7 +104,7 @@ public class CommandHandler {
             }
             if (commandArgumentsHandler.isEnd()) {
                 Place place = commandArgumentsHandler.getPlace();
-                if (bot.addRate(place)) {
+                if (botFunction.addRate(place)) {
                     controller.sendMessageToUser("Your rate was added ;)");
                 }
                 else {
@@ -130,7 +124,7 @@ public class CommandHandler {
                 userLocation = commandArgumentsHandler.getLocation(message);
             }
             if (commandArgumentsHandler.isEnd()) {
-                List<String> bars = bot.getNearestPlaces(userLocation);
+                List<String> bars = botFunction.getNearestPlaces(userLocation);
                 if (bars.size() == 0) {
                     controller.sendMessageToUser("There are no bars near you");
                 } else {

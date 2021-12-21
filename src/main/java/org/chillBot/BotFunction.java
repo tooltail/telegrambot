@@ -23,18 +23,26 @@ public class BotFunction implements IBotFunction {
      * Add place to db
      * @param place added place
      * @return true if added, false if not
-     * @throws SQLException
      */
-    public boolean addPlace(Place place) throws SQLException {
-        return placeDao.addPlace(place);
+    public boolean addPlace(Place place) {
+        try {
+            return placeDao.addPlace(place);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
      * Gets list of bars
-     * @throws SQLException
      */
-    public List<String> getPlaces(Integer startIdx, Integer endIdx) throws SQLException {
-        List<Place> places = placeDao.getPlaces(startIdx, endIdx);
+    public List<String> getPlaces(Integer startIdx, Integer endIdx) {
+        List<Place> places = null;
+        try {
+            places = placeDao.getPlaces(startIdx, endIdx);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         List<String> formattedOutput = new LinkedList<>();
         for (Place place : places) {
             String result;
@@ -56,28 +64,27 @@ public class BotFunction implements IBotFunction {
 
     /**
      * Add rate to place
-     * @param place
-     * @return
-     * @throws SQLException
      */
-    public boolean addRate(Place place) throws SQLException {
-        return placeDao.updateRate(place);
+    public boolean addRate(Place place) {
+        try {
+            return placeDao.updateRate(place);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
-     * Returns List of nearest places in 2 km
-     * @param userLocation
-     * @return
-     * @throws SQLException
+     * Returns List of the nearest places in 2 km
      */
     public List<String> getNearestPlaces(Location userLocation) throws SQLException {
         List<Place> places = placeDao.getPlaces(1, placeDao.getNumberOfRows() + 1);
         List<String> formattedOutput = new LinkedList<>();
         Comparator<Place> comparator = new PlaceRateComparator();
+        DistanceCalculator distanceCalculator = new DistanceCalculator();
         PriorityQueue<Place> queue = new PriorityQueue<>(10, comparator);
         for (Place place : places) {
-            Location location = place.getLocation();
-            Double distance = location.getDistanceFromLatLonInKm(userLocation);
+            Double distance = distanceCalculator.getDistanceFromLatLonInKm(place.getLocation(), userLocation);
             if (distance <= 2) {
                 queue.add(place);
             }
@@ -85,18 +92,19 @@ public class BotFunction implements IBotFunction {
         while (queue.size() != 0) {
             Place place = queue.remove();
             String result;
+            Double distance = distanceCalculator.getDistanceFromLatLonInKm(place.getLocation(), userLocation);
             if (place.getRate() == -1) {
                 result = String.format("%s (%s)\nnot rated\ndistance: %s km",
                         place.getName(),
                         place.getAddress(),
-                        String.format(Locale.GERMANY, "%.2f", place.getLocation().getDistanceFromLatLonInKm(userLocation)));
+                        String.format(Locale.GERMANY, "%.2f", distance));
             }
             else {
                 result = String.format("%s (%s)\nrate: %s/5\ndistance: %s km",
                         place.getName(),
                         place.getAddress(),
                         String.format(Locale.GERMANY, "%.2f", place.getRate()),
-                        String.format(Locale.GERMANY, "%.2f", place.getLocation().getDistanceFromLatLonInKm(userLocation)));
+                        String.format(Locale.GERMANY, "%.2f", distance));
             }
             formattedOutput.add(result);
         }

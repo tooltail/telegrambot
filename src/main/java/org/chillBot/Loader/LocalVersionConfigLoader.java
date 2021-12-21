@@ -1,8 +1,8 @@
 package org.chillBot.Loader;
 
-import org.chillBot.Location;
-import org.chillBot.controller.TelegramController;
-import org.chillBot.controller.VkController;
+import org.chillBot.AddressLonLatFinder;
+import org.chillBot.controller.TelegramUserInteraction;
+import org.chillBot.controller.VkUserInteraction;
 import org.chillBot.dao.DBPlaceDao;
 
 import java.io.*;
@@ -25,17 +25,17 @@ public class LocalVersionConfigLoader {
                         } else {
                                 throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
                         }
-                        TelegramController.setBotToken(prop.getProperty("telegramBot.BotToken"));
-                        TelegramController.setBotUsername(prop.getProperty("telegramBot.BotUsername"));
-                        VkController.setGroupId(Integer.parseInt(prop.getProperty("vkBot.GroupId")));
-                        VkController.setBotToken(prop.getProperty("vkBot.BotToken"));
+                        TelegramUserInteraction.setBotToken(prop.getProperty("telegramBot.BotToken"));
+                        TelegramUserInteraction.setBotUsername(prop.getProperty("telegramBot.BotUsername"));
+                        VkUserInteraction.setGroupId(Integer.parseInt(prop.getProperty("vkBot.GroupId")));
+                        VkUserInteraction.setBotToken(prop.getProperty("vkBot.BotToken"));
                         DBPlaceDao.setTableName(prop.getProperty("database.tableName"));
                         DBPlaceDao.setUser(prop.getProperty("database.user"));
                         DBPlaceDao.setPassword(prop.getProperty("database.password"));
                         DBPlaceDao.setUrl(prop.getProperty("database.url"));
-                        Location.setApiKey(prop.getProperty("daData.ApiKey"));
-                        Location.setSecretKey(prop.getProperty("daData.SecretKey"));
-                        Location.setDataClient();
+                        AddressLonLatFinder.setApiKey(prop.getProperty("daData.ApiKey"));
+                        AddressLonLatFinder.setSecretKey(prop.getProperty("daData.SecretKey"));
+                        AddressLonLatFinder.setDataClient();
                 } catch (Exception e) {
                         throw e;
                 } finally {

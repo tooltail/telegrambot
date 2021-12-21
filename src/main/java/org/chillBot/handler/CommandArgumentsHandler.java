@@ -5,12 +5,13 @@ import com.vk.api.sdk.exceptions.ClientException;
 import org.chillBot.Command;
 import org.chillBot.Location;
 import org.chillBot.Place;
-import org.chillBot.controller.Controller;
+import org.chillBot.AddressLonLatFinder;
+import org.chillBot.controller.Interaction;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
 /**
- * Process command arguments
+ * Takes commands arguments and forms object from these arguments, send messages to user what argument to enter
  */
 public class CommandArgumentsHandler {
 
@@ -26,16 +27,16 @@ public class CommandArgumentsHandler {
 
     private Place place;
 
-    private Controller controller;
+    private Interaction interaction;
 
     /**
      * Sets one of the commands from enum Command
      */
     private Command currentCommand;
 
-    public CommandArgumentsHandler(Controller controller, Integer countCommandArguments, Command currentCommand) {
+    public CommandArgumentsHandler(Interaction interaction, Integer countCommandArguments, Command currentCommand) {
         place = new Place();
-        this.controller = controller;
+        this.interaction = interaction;
         this.countCommandArguments = countCommandArguments;
         this.currentCommand = currentCommand;
     }
@@ -55,8 +56,8 @@ public class CommandArgumentsHandler {
     public Location getLocation(String location) {
         Location coordinates;
         if (!location.contains("coordinates:")) {
-            coordinates = new Location();
-            coordinates.findPlaceLonLat(location);
+            AddressLonLatFinder lonLatFinder = new AddressLonLatFinder();
+            coordinates = lonLatFinder.getAddressLonLat(location);
         }
         else {
             coordinates = new Location(Double.parseDouble(location.split(" ")[1]),
@@ -72,27 +73,27 @@ public class CommandArgumentsHandler {
     public void addArgument(String argument) throws TelegramApiException, ClientException, ApiException {
         if (currentCommandArgument == 0) {
             place.setType(argument);
-            controller.sendMessageToUser("Enter the name of the establishment:");
+            interaction.sendMessageToUser("Enter the name of the establishment:");
             currentCommandArgument++;
         } else if (currentCommandArgument == 1) {
             place.setName(argument);
-            controller.sendMessageToUser("Enter the address of the establishment:");
+            interaction.sendMessageToUser("Enter the address of the establishment:");
             currentCommandArgument++;
         } else if (currentCommandArgument == 2) {
             place.setAddress(argument);
             if (currentCommand == Command.rateBar) {
-                controller.requestRate();
+                interaction.requestRate();
             }
             currentCommandArgument++;
         } else if (currentCommandArgument == 3){
-            controller.sendMessageToUser(String.format("%s", argument));
+            interaction.sendMessageToUser(String.format("%s", argument));
             Double rate = Double.parseDouble(argument);
             if (rate >= 1 && rate <= 5) {
                 place.setRate(rate);
                 currentCommandArgument++;
             }
             else {
-                controller.sendMessageToUser("The rate must be between 1 and 5");
+                interaction.sendMessageToUser("The rate must be between 1 and 5");
             }
         }
     }

@@ -21,7 +21,7 @@ import static java.lang.Math.toIntExact;
 /**
  * Interaction with user in Telegram
  */
-public class TelegramController extends TelegramLongPollingBot implements Controller {
+public class TelegramUserInteraction extends TelegramLongPollingBot implements Interaction {
 
     private Long chatId;
     private CommandHandler commandHandler;
@@ -32,7 +32,7 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
     private static String botToken;
 
     public static void setBotToken(String botToken) {
-        TelegramController.botToken = botToken;
+        TelegramUserInteraction.botToken = botToken;
     }
 
     public void setChatId(Long chatId) {
@@ -40,16 +40,15 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
     }
 
     public static void setBotUsername(String botUsername) {
-        TelegramController.botUsername = botUsername;
+        TelegramUserInteraction.botUsername = botUsername;
     }
 
-    public TelegramController () {
+    public TelegramUserInteraction() {
         commandHandler = new CommandHandler();
     }
 
     /**
      * Create Inline keyboard with buttons 1-5
-     * @return
      */
     private List<InlineKeyboardButton> addRateButtonsToRow() {
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
@@ -64,7 +63,6 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     /**
      * Send keyboard with rating buttons to user
-     * @throws TelegramApiException
      */
     public void requestRate() throws TelegramApiException {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -81,7 +79,6 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     /**
      * Send button to show more bars
-     * @throws TelegramApiException
      */
     public void requestMoreBars() throws TelegramApiException {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -102,8 +99,6 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     /**
      * Builds and sends message to user
-     * @param text
-     * @throws TelegramApiException
      */
     public void sendMessageToUser(String text) throws TelegramApiException {
         execute(SendMessage.builder()
@@ -124,21 +119,20 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
 
     /**
      * Checks whether update was made by user (query of user)
-     * @param update
      */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
             message = update.getMessage();
             try {
-                TelegramController telegramController = new TelegramController();
-                telegramController.setChatId(message.getChatId());
+                TelegramUserInteraction telegramInteraction = new TelegramUserInteraction();
+                telegramInteraction.setChatId(message.getChatId());
                 if (message.hasLocation()) {
                     String msg = String.format("coordinates: %s %s", message.getLocation().getLongitude(), message.getLocation().getLatitude());
-                    commandHandler.processInput(msg, telegramController);
+                    commandHandler.processInput(msg, telegramInteraction);
                 }
                 else {
-                    commandHandler.processInput(message.getText(), telegramController);
+                    commandHandler.processInput(message.getText(), telegramInteraction);
                 }
             } catch (ClientException | ApiException | SQLException | TelegramApiException e) {
                 e.printStackTrace();
@@ -146,9 +140,9 @@ public class TelegramController extends TelegramLongPollingBot implements Contro
         }
         else if(update.hasCallbackQuery()){
             try {
-                TelegramController telegramController = new TelegramController();
-                telegramController.setChatId(update.getCallbackQuery().getMessage().getChatId());
-                commandHandler.processInput(update.getCallbackQuery().getData(), telegramController);
+                TelegramUserInteraction telegramInteraction = new TelegramUserInteraction();
+                telegramInteraction.setChatId(update.getCallbackQuery().getMessage().getChatId());
+                commandHandler.processInput(update.getCallbackQuery().getData(), telegramInteraction);
 
                 long callbackMessageId = update.getCallbackQuery().getMessage().getMessageId();
                 long callbackChatId = update.getCallbackQuery().getMessage().getChatId();
