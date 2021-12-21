@@ -1,8 +1,5 @@
 package org.chillBot;
 
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -12,28 +9,16 @@ public interface IBotFunction {
 
     /**
      * Adds place
-     * @param place
-     * @return
-     * @throws SQLException
-     * @throws TelegramApiException
      */
-    boolean addPlace(Place place) throws SQLException, TelegramApiException;
+    boolean addPlace(Place place);
 
     /**
      * Return list of places
-     * @param startIdx
-     * @param endIdx
-     * @return
-     * @throws SQLException
      */
-    List<String> getPlaces(Integer startIdx, Integer endIdx) throws SQLException;
+    List<String> getPlaces(Integer startIdx, Integer endIdx);
 
     /**
      * Adds rate to place
-     * @param place
-     * @return
-     * @throws SQLException
-     * @throws TelegramApiException
      */
-    boolean addRate(Place place) throws SQLException, TelegramApiException;
+    boolean addRate(Place place);
 }
